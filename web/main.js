@@ -297,6 +297,10 @@ try {
     initial,
     onSelect: jump,
     onMoonSelect: selectMoon,
+    onOpenRepo: idx => {
+      const activeMoon = selectedMoon >= 0 ? missions[idx].moons?.[selectedMoon] : null;
+      window.open(repositoryUrl(activeMoon ? activeMoon.repo : missions[idx]), '_blank', 'noopener,noreferrer');
+    },
     onTelemetry: data => {
       if ($('#hud-heading')) $('#hud-heading').textContent = `${String(data.heading).padStart(3, '0')}°`;
       if ($('#hud-altitude')) $('#hud-altitude').textContent = `${data.altitude} Mm`;

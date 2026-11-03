@@ -1,25 +1,29 @@
-<a href="https://chapi-dev.github.io/chapi-dev/">
-  <picture>
-    <source media="(max-width: 640px)" srcset="./assets/distance-mobile.svg">
-    <img src="./assets/distance.svg" width="100%" alt="DISTANCE. Animated 3D Galactic Holomap featuring eight procedural planetary systems and 23 Microsoft cloud, AI Foundry, Fabric, AKS, SRE, Arc and Quantum repositories.">
-  </picture>
-</a>
+<img src="./assets/commander-bio.svg" width="100%" alt="Commander Dossier — Antonio Chapinal (@chapi-dev), Cloud & AI Solutions Engineer at Microsoft specializing in Azure AI Foundry, Microsoft Fabric, AKS, Azure SRE Agent, Azure Arc, SQL MI, GitHub Copilot Enterprise and Quantum Computing.">
 
 <p align="center">
-  <samp><b>3D TACTICAL SECTOR DECK</b> &middot; CLICK ANY PLANETARY SYSTEM TO ENGAGE ORBIT OR EXPAND CONSOLES BELOW</samp>
+  <samp><b>3D GALACTIC HOLOMAP</b> &middot; CLICK ANY PLANET BELOW TO OPEN ITS MICROSOFT REPOSITORY DIRECTLY</samp>
+</p>
+
+<!-- 8 seamless vertical slices of the 3D Holomap: clicking any planet opens its GitHub repository directly -->
+<div align="center"><a href="https://github.com/chapi-dev/agent-hosting-lab" title="01 / Vesper — Open agent-hosting-lab repository (Azure AI Foundry)"><img align="top" src="./assets/holo-01-vesper.svg" width="12.5%" alt="01 Vesper - agent-hosting-lab"></a><a href="https://github.com/chapi-dev/fabric-private-networking-cookbook" title="02 / Pelagic — Open fabric-private-networking-cookbook repository (Microsoft Fabric)"><img align="top" src="./assets/holo-02-pelagic.svg" width="12.5%" alt="02 Pelagic - fabric-private-networking-cookbook"></a><a href="https://github.com/chapi-dev/Introduction-to-Quantum-Computing" title="03 / Parallax — Open Introduction-to-Quantum-Computing repository (Microsoft Q# & Quantum)"><img align="top" src="./assets/holo-03-parallax.svg" width="12.5%" alt="03 Parallax - Introduction-to-Quantum-Computing"></a><a href="https://github.com/chapi-dev/telco-devsecops-demo" title="04 / Ferrum — Open telco-devsecops-demo repository (AKS & DevSecOps)"><img align="top" src="./assets/holo-04-ferrum.svg" width="12.5%" alt="04 Ferrum - telco-devsecops-demo"></a><a href="https://github.com/chapi-dev/azure-sre-agent-sandbox" title="05 / Sentinel — Open azure-sre-agent-sandbox repository (Azure SRE Agent)"><img align="top" src="./assets/holo-05-sentinel.svg" width="12.5%" alt="05 Sentinel - azure-sre-agent-sandbox"></a><a href="https://github.com/chapi-dev/Arc-Linux" title="06 / Meridian — Open Arc-Linux repository (Azure Arc & Hybrid vWAN)"><img align="top" src="./assets/holo-06-meridian.svg" width="12.5%" alt="06 Meridian - Arc-Linux"></a><a href="https://github.com/chapi-dev/sql-mi-link-demo" title="07 / Halation — Open sql-mi-link-demo repository (Azure SQL MI & ACA)"><img align="top" src="./assets/holo-07-halation.svg" width="12.5%" alt="07 Halation - sql-mi-link-demo"></a><a href="https://github.com/chapi-dev/ghcopilot-optimization-workshop" title="08 / Aphelion — Open ghcopilot-optimization-workshop repository (GitHub Copilot Enterprise)"><img align="top" src="./assets/holo-08-aphelion.svg" width="12.5%" alt="08 Aphelion - ghcopilot-optimization-workshop"></a></div>
+
+<br>
+
+<p align="center">
+  <samp><b>3D TACTICAL SECTOR DECK</b> &middot; CLICK ANY PLANET CARD TO OPEN ITS REPOSITORY DIRECTLY</samp>
 </p>
 
 <div align="center">
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=vesper" title="SYS-01 Vesper: Azure AI Foundry & Multi-Agent Systems"><img src="./assets/sys-01-vesper.svg" width="24%" alt="SYS-01 Vesper - Azure AI Foundry"></a>
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=pelagic" title="SYS-02 Pelagic: Microsoft Fabric & Private Data Mesh"><img src="./assets/sys-02-pelagic.svg" width="24%" alt="SYS-02 Pelagic - Microsoft Fabric"></a>
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=parallax" title="SYS-03 Parallax: Microsoft Q# & Quantum Computing"><img src="./assets/sys-03-parallax.svg" width="24%" alt="SYS-03 Parallax - Microsoft Q# & Quantum"></a>
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=ferrum" title="SYS-04 Ferrum: Azure Kubernetes Service & DevSecOps"><img src="./assets/sys-04-ferrum.svg" width="24%" alt="SYS-04 Ferrum - AKS & DevSecOps"></a>
+  <a href="https://github.com/chapi-dev/agent-hosting-lab" title="SYS-01 Vesper: Open agent-hosting-lab repository (Azure AI Foundry & Multi-Agent Systems)"><img src="./assets/sys-01-vesper.svg" width="24%" alt="SYS-01 Vesper - Azure AI Foundry"></a>
+  <a href="https://github.com/chapi-dev/fabric-private-networking-cookbook" title="SYS-02 Pelagic: Open fabric-private-networking-cookbook repository (Microsoft Fabric & Private Data Mesh)"><img src="./assets/sys-02-pelagic.svg" width="24%" alt="SYS-02 Pelagic - Microsoft Fabric"></a>
+  <a href="https://github.com/chapi-dev/Introduction-to-Quantum-Computing" title="SYS-03 Parallax: Open Introduction-to-Quantum-Computing repository (Microsoft Q# & Quantum Computing)"><img src="./assets/sys-03-parallax.svg" width="24%" alt="SYS-03 Parallax - Microsoft Q# & Quantum"></a>
+  <a href="https://github.com/chapi-dev/telco-devsecops-demo" title="SYS-04 Ferrum: Open telco-devsecops-demo repository (Azure Kubernetes Service & DevSecOps)"><img src="./assets/sys-04-ferrum.svg" width="24%" alt="SYS-04 Ferrum - AKS & DevSecOps"></a>
 </div>
 <div align="center">
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=sentinel" title="SYS-05 Sentinel: Azure SRE Agent & Autonomous InfraOps"><img src="./assets/sys-05-sentinel.svg" width="24%" alt="SYS-05 Sentinel - Azure SRE Agent"></a>
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=meridian" title="SYS-06 Meridian: Azure Arc, Defender & Hybrid vWAN"><img src="./assets/sys-06-meridian.svg" width="24%" alt="SYS-06 Meridian - Azure Arc & Hybrid vWAN"></a>
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=halation" title="SYS-07 Halation: Azure SQL MI, Container Apps & App Service"><img src="./assets/sys-07-halation.svg" width="24%" alt="SYS-07 Halation - Azure SQL MI & Container Apps"></a>
-  <a href="https://chapi-dev.github.io/chapi-dev/?destination=aphelion" title="SYS-08 Aphelion: GitHub Copilot Enterprise & Agentic DevEx"><img src="./assets/sys-08-aphelion.svg" width="24%" alt="SYS-08 Aphelion - GitHub Copilot Enterprise"></a>
+  <a href="https://github.com/chapi-dev/azure-sre-agent-sandbox" title="SYS-05 Sentinel: Open azure-sre-agent-sandbox repository (Azure SRE Agent & Autonomous InfraOps)"><img src="./assets/sys-05-sentinel.svg" width="24%" alt="SYS-05 Sentinel - Azure SRE Agent"></a>
+  <a href="https://github.com/chapi-dev/Arc-Linux" title="SYS-06 Meridian: Open Arc-Linux repository (Azure Arc, Defender & Hybrid vWAN)"><img src="./assets/sys-06-meridian.svg" width="24%" alt="SYS-06 Meridian - Azure Arc & Hybrid vWAN"></a>
+  <a href="https://github.com/chapi-dev/sql-mi-link-demo" title="SYS-07 Halation: Open sql-mi-link-demo repository (Azure SQL MI, Container Apps & App Service)"><img src="./assets/sys-07-halation.svg" width="24%" alt="SYS-07 Halation - Azure SQL MI & Container Apps"></a>
+  <a href="https://github.com/chapi-dev/ghcopilot-optimization-workshop" title="SYS-08 Aphelion: Open ghcopilot-optimization-workshop repository (GitHub Copilot Enterprise & Agentic DevEx)"><img src="./assets/sys-08-aphelion.svg" width="24%" alt="SYS-08 Aphelion - GitHub Copilot Enterprise"></a>
 </div>
 
 <br>

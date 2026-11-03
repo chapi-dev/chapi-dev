@@ -324,7 +324,7 @@ function surfaceColours(kind, palette) {
   return [warm.clone().lerp(night, 0.72), warm.clone().lerp(cool, 0.42), light.clone().lerp(warm, 0.3)];
 }
 
-export function createUniverse(host, { initial, onSelect, onMoonSelect, onTelemetry, onLost }) {
+export function createUniverse(host, { initial, onSelect, onMoonSelect, onOpenRepo, onTelemetry, onLost }) {
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -844,6 +844,8 @@ export function createUniverse(host, { initial, onSelect, onMoonSelect, onTeleme
         const planetHit = ray.intersectObjects(bodies.map(({ body }) => body))[0];
         if (planetHit && planetHit.object.userData.index !== index) {
           onSelect(planetHit.object.userData.index);
+        } else if (planetHit && planetHit.object.userData.index === index) {
+          onOpenRepo?.(index);
         }
       }
     }

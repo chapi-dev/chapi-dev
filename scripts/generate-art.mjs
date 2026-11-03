@@ -83,19 +83,19 @@ try {
   }
 
   const holoCoords = [
-    { x: 165, y: 235, planeY: 365, size: 138, accent: '#fd8ea1', tag: 'AZURE AI FOUNDRY' },
-    { x: 355, y: 165, planeY: 315, size: 146, accent: '#4da6ff', tag: 'MICROSOFT FABRIC' },
-    { x: 545, y: 255, planeY: 390, size: 132, accent: '#dedede', tag: 'Q# & QUANTUM' },
-    { x: 485, y: 420, planeY: 515, size: 138, accent: '#fbbf24', tag: 'AKS & DEVSECOPS' },
-    { x: 725, y: 185, planeY: 330, size: 140, accent: '#4ade80', tag: 'AZURE SRE AGENT' },
-    { x: 895, y: 285, planeY: 415, size: 144, accent: '#fbbf24', tag: 'AZURE ARC & vWAN' },
-    { x: 790, y: 435, planeY: 525, size: 140, accent: '#fd8ea1', tag: 'SQL MI & ACA' },
-    { x: 1095, y: 225, planeY: 380, size: 156, accent: '#fd8ea1', tag: 'GITHUB COPILOT' },
+    { x: 80, y: 185, planeY: 345, size: 124, accent: '#fd8ea1', tag: 'AI FOUNDRY' },
+    { x: 240, y: 120, planeY: 290, size: 128, accent: '#4da6ff', tag: 'MS FABRIC' },
+    { x: 400, y: 225, planeY: 380, size: 122, accent: '#dedede', tag: 'Q# QUANTUM' },
+    { x: 560, y: 315, planeY: 455, size: 124, accent: '#fbbf24', tag: 'AKS & GHAS' },
+    { x: 720, y: 135, planeY: 300, size: 126, accent: '#4ade80', tag: 'SRE AGENT' },
+    { x: 880, y: 240, planeY: 390, size: 128, accent: '#fbbf24', tag: 'AZURE ARC' },
+    { x: 1040, y: 325, planeY: 460, size: 124, accent: '#fd8ea1', tag: 'SQL MI & ACA' },
+    { x: 1200, y: 165, planeY: 330, size: 132, accent: '#fd8ea1', tag: 'GH COPILOT' },
   ];
 
   const stars = Array.from({ length: 90 }, (_, index) => {
     const x = 18 + (index * 97.31) % 1244;
-    const y = 58 + (index * 67.19) % 540;
+    const y = 32 + (index * 67.19) % 460;
     const twinkle = index % 6 === 0 ? ' class="twinkle"' : '';
     return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${index % 8 === 0 ? 1.3 : 0.7}" fill="#dedede" opacity="${index % 8 === 0 ? 0.55 : 0.22}"${twinkle}/>`;
   }).join('\n');
@@ -106,68 +106,153 @@ try {
   const holoNodesDesktop = missions.map((mission, idx) => {
     const c = holoCoords[idx];
     const half = c.size / 2;
-    const orbitRx = (c.size * 0.44).toFixed(1);
-    const orbitRy = (c.size * 0.17).toFixed(1);
+    const orbitRx = (c.size * 0.43).toFixed(1);
+    const orbitRy = (c.size * 0.16).toFixed(1);
     const repoCount = 1 + (mission.moons?.length || 0);
     return `<g>
   <line x1="${c.x}" y1="${c.y}" x2="${c.x}" y2="${c.planeY}" stroke="${c.accent}" stroke-opacity=".55" stroke-dasharray="3 3"/>
-  <ellipse cx="${c.x}" cy="${c.planeY}" rx="22" ry="8" fill="none" stroke="${c.accent}" stroke-opacity=".65"/>
+  <ellipse cx="${c.x}" cy="${c.planeY}" rx="20" ry="7" fill="none" stroke="${c.accent}" stroke-opacity=".65"/>
   <circle cx="${c.x}" cy="${c.planeY}" r="2.5" fill="${c.accent}"/>
   <image x="${(c.x - half).toFixed(1)}" y="${(c.y - half).toFixed(1)}" width="${c.size}" height="${c.size}" href="${worldSprites[idx]}"/>
   <ellipse cx="${c.x}" cy="${c.y}" rx="${orbitRx}" ry="${orbitRy}" fill="none" stroke="${c.accent}" stroke-opacity=".42" stroke-dasharray="4 4"/>
   <circle cx="${c.x}" cy="${c.y}" r="${(c.size * 0.36).toFixed(1)}" fill="none" stroke="${c.accent}" stroke-opacity=".35" stroke-dasharray="10 8" class="spin-slow" style="transform-origin:${c.x}px ${c.y}px"/>
   <g transform="translate(${c.x} ${c.y})"><g class="orbit-${(idx % 3) + 1}"><circle cx="${orbitRx}" cy="0" r="3.2" fill="${c.accent}"/></g></g>
-  <rect x="${c.x - 68}" y="${c.y + half - 14}" width="136" height="34" rx="6" fill="#141414" fill-opacity=".88" stroke="#474747"/>
-  <text x="${c.x}" y="${c.y + half}" text-anchor="middle" fill="#dedede" font-size="10" font-weight="600" letter-spacing="1" class="mono">0${idx + 1} / ${escape(mission.name.toUpperCase())}</text>
-  <text x="${c.x}" y="${c.y + half + 13}" text-anchor="middle" fill="${c.accent}" font-size="8" letter-spacing=".8" class="mono">${escape(c.tag)} (${repoCount})</text>
+  <rect x="${c.x - 70}" y="${c.y + half - 12}" width="140" height="34" rx="6" fill="#141414" fill-opacity=".92" stroke="#474747"/>
+  <text x="${c.x}" y="${c.y + half + 2}" text-anchor="middle" fill="#dedede" font-size="9.5" font-weight="600" letter-spacing=".8" class="mono">0${idx + 1} / ${escape(mission.name.toUpperCase())}</text>
+  <text x="${c.x}" y="${c.y + half + 15}" text-anchor="middle" fill="${c.accent}" font-size="8" letter-spacing=".6" class="mono">${escape(c.tag)} (${repoCount}) ↗</text>
 </g>`;
   }).join('\n');
 
-  const desktopSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="680" viewBox="0 0 1280 680" role="img" aria-labelledby="title description">
-<title id="title">DISTANCE - Interactive 3D Microsoft Technology Star Map by Antonio Chapinal</title>
-<desc id="description">Animated 3D Galactic Holomap featuring eight procedural planetary systems and 23 repositories across Azure AI Foundry, Microsoft Fabric, Q# Quantum, AKS, Azure SRE Agent, Azure Arc, Azure SQL MI and GitHub Copilot Enterprise.</desc>
-<style>
+  const holoSharedDefs = `<style>
   text{font-family:"Segoe UI",Aptos,Calibri,sans-serif}
   .mono{font-family:Consolas,"Courier New",monospace}
   @keyframes dash{to{stroke-dashoffset:-160}}
   @keyframes spin{to{transform:rotate(360deg)}}
   @keyframes pulse{0%,100%{opacity:.25}50%{opacity:.85}}
-  @keyframes scan{0%,100%{transform:translateY(-28px);opacity:.15}50%{transform:translateY(28px);opacity:.75}}
-  @keyframes orbitA{0%{transform:translate(0,0)}25%{transform:translate(-55px,18px)}50%{transform:translate(-110px,0)}75%{transform:translate(-55px,-18px)}100%{transform:translate(0,0)}}
+  @keyframes orbitA{0%{transform:translate(0,0)}25%{transform:translate(-48px,15px)}50%{transform:translate(-96px,0)}75%{transform:translate(-48px,-15px)}100%{transform:translate(0,0)}}
   .flow{animation:dash 7s linear infinite}
   .spin-slow{animation:spin 28s linear infinite}
   .twinkle{animation:pulse 4.5s ease-in-out infinite}
-  .scan-ring{animation:scan 5.5s ease-in-out infinite}
   .orbit-1,.orbit-2,.orbit-3{animation:orbitA 9s linear infinite}
   .orbit-2{animation-duration:12s}
   .orbit-3{animation-duration:15s}
-  @media(prefers-reduced-motion:reduce){.flow,.spin-slow,.twinkle,.scan-ring,.orbit-1,.orbit-2,.orbit-3{animation:none!important}}
-</style>
-<rect width="1280" height="680" fill="${heroFrame.background}"/>
+  @media(prefers-reduced-motion:reduce){.flow,.spin-slow,.twinkle,.orbit-1,.orbit-2,.orbit-3{animation:none!important}}
+</style>`;
+
+  const holoSceneBody = `<rect width="1280" height="520" fill="${heroFrame.background}"/>
 ${stars}
 <g opacity=".55">
-  <ellipse cx="640" cy="410" rx="560" ry="185" fill="none" stroke="#383838" stroke-dasharray="6 6"/>
-  <ellipse cx="640" cy="410" rx="410" ry="135" fill="none" stroke="#383838"/>
-  <ellipse cx="640" cy="410" rx="260" ry="86" fill="none" stroke="#383838" stroke-dasharray="4 6"/>
-  <ellipse cx="640" cy="410" rx="115" ry="38" fill="none" stroke="#474747"/>
-  <line x1="80" y1="410" x2="1200" y2="410" stroke="#2e2e2e"/>
-  <line x1="640" y1="215" x2="640" y2="595" stroke="#2e2e2e"/>
-  <line x1="220" y1="275" x2="1060" y2="545" stroke="#292929"/>
-  <line x1="220" y1="545" x2="1060" y2="275" stroke="#292929"/>
+  <ellipse cx="640" cy="340" rx="560" ry="155" fill="none" stroke="#383838" stroke-dasharray="6 6"/>
+  <ellipse cx="640" cy="340" rx="410" ry="112" fill="none" stroke="#383838"/>
+  <ellipse cx="640" cy="340" rx="260" ry="72" fill="none" stroke="#383838" stroke-dasharray="4 6"/>
+  <ellipse cx="640" cy="340" rx="115" ry="32" fill="none" stroke="#474747"/>
+  <line x1="60" y1="340" x2="1220" y2="340" stroke="#2e2e2e"/>
+  <line x1="640" y1="175" x2="640" y2="500" stroke="#2e2e2e"/>
+  <line x1="200" y1="220" x2="1080" y2="460" stroke="#292929"/>
+  <line x1="200" y1="460" x2="1080" y2="220" stroke="#292929"/>
 </g>
 <path d="${crossPath}" fill="none" stroke="#474747" stroke-width="1.2" stroke-dasharray="4 6"/>
 <path d="${lanePath}" fill="none" stroke="#fd8ea1" stroke-opacity=".32" stroke-width="2.5"/>
 <path d="${lanePath}" fill="none" stroke="#fd8ea1" stroke-width="2" stroke-dasharray="10 14" class="flow"/>
-${holoNodesDesktop}
-<rect x="24" y="18" width="1232" height="52" rx="10" fill="#161616" fill-opacity=".9" stroke="#3d3d3d"/>
-<circle cx="48" cy="44" r="4.5" fill="#fd8ea1" class="twinkle"/>
-<text x="64" y="40" fill="#dedede" font-size="12" font-weight="600" letter-spacing="2.4" class="mono">CHAPI // DISTANCE 3D GALACTIC HOLOMAP</text>
-<text x="64" y="56" fill="#919191" font-size="9.5" letter-spacing="1.3" class="mono">ANTONIO CHAPINAL · MICROSOFT CLOUD, AI FOUNDRY, FABRIC, AKS, SRE, ARC &amp; QUANTUM</text>
-<rect x="954" y="28" width="286" height="32" rx="6" fill="#fd8ea1"/>
-<text x="974" y="48" fill="#1a1a1a" font-size="10.5" font-weight="600" letter-spacing="1.1" class="mono">ENTER INTERACTIVE 3D FLIGHT ↗</text>
-<rect x="24" y="612" width="1232" height="48" rx="10" fill="#161616" fill-opacity=".9" stroke="#3d3d3d"/>
-<text x="46" y="640" fill="#dedede" font-size="10" letter-spacing="1.4" class="mono">STATUS: 08 PLANETARY SYSTEMS ONLINE · 23 PUBLIC MICROSOFT REPOSITORIES MAPPED</text>
-<text x="1234" y="640" text-anchor="end" fill="#fd8ea1" font-size="10" letter-spacing="1.2" class="mono">CLICK ANY WORLD BELOW OR LAUNCH 3D COCKPIT ↗</text>
+${holoNodesDesktop}`;
+
+  const sliceOutputs = missions.map((mission, idx) => {
+    const x0 = idx * 160;
+    const c = holoCoords[idx];
+    const half = c.size / 2;
+    const orbitRx = (c.size * 0.43).toFixed(1);
+    const orbitRy = (c.size * 0.16).toFixed(1);
+    const repoCount = 1 + (mission.moons?.length || 0);
+    const sliceStars = Array.from({ length: 14 }, (_, sIdx) => {
+      const sx = x0 + 10 + ((idx * 37 + sIdx * 43) % 140);
+      const sy = 24 + ((idx * 53 + sIdx * 71) % 470);
+      return `<circle cx="${sx}" cy="${sy}" r="${sIdx % 4 === 0 ? 1.2 : 0.7}" fill="#dedede" opacity="${sIdx % 4 === 0 ? 0.5 : 0.22}"/>`;
+    }).join('\n');
+    const sliceSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="520" viewBox="${x0} 0 160 520" role="img" aria-labelledby="title description">
+<title id="title">0${idx + 1} / ${escape(mission.name)} — Open ${escape(mission.repo)} repository</title>
+<desc id="description">Click to open the ${escape(mission.repo)} GitHub repository (${escape(mission.field)}).</desc>
+${holoSharedDefs}
+<rect x="${x0}" y="0" width="160" height="520" fill="${heroFrame.background}"/>
+${sliceStars}
+<g opacity=".55">
+  <ellipse cx="640" cy="340" rx="560" ry="155" fill="none" stroke="#383838" stroke-dasharray="6 6"/>
+  <ellipse cx="640" cy="340" rx="410" ry="112" fill="none" stroke="#383838"/>
+  <ellipse cx="640" cy="340" rx="260" ry="72" fill="none" stroke="#383838" stroke-dasharray="4 6"/>
+  <ellipse cx="640" cy="340" rx="115" ry="32" fill="none" stroke="#474747"/>
+  <line x1="60" y1="340" x2="1220" y2="340" stroke="#2e2e2e"/>
+  <line x1="640" y1="175" x2="640" y2="500" stroke="#2e2e2e"/>
+</g>
+<path d="${crossPath}" fill="none" stroke="#474747" stroke-width="1.2" stroke-dasharray="4 6"/>
+<path d="${lanePath}" fill="none" stroke="#fd8ea1" stroke-opacity=".32" stroke-width="2.5"/>
+<path d="${lanePath}" fill="none" stroke="#fd8ea1" stroke-width="2" stroke-dasharray="10 14" class="flow"/>
+<g>
+  <line x1="${c.x}" y1="${c.y}" x2="${c.x}" y2="${c.planeY}" stroke="${c.accent}" stroke-opacity=".55" stroke-dasharray="3 3"/>
+  <ellipse cx="${c.x}" cy="${c.planeY}" rx="20" ry="7" fill="none" stroke="${c.accent}" stroke-opacity=".65"/>
+  <circle cx="${c.x}" cy="${c.planeY}" r="2.5" fill="${c.accent}"/>
+  <image x="${(c.x - half).toFixed(1)}" y="${(c.y - half).toFixed(1)}" width="${c.size}" height="${c.size}" href="${worldSprites[idx]}"/>
+  <ellipse cx="${c.x}" cy="${c.y}" rx="${orbitRx}" ry="${orbitRy}" fill="none" stroke="${c.accent}" stroke-opacity=".42" stroke-dasharray="4 4"/>
+  <circle cx="${c.x}" cy="${c.y}" r="${(c.size * 0.36).toFixed(1)}" fill="none" stroke="${c.accent}" stroke-opacity=".35" stroke-dasharray="10 8" class="spin-slow" style="transform-origin:${c.x}px ${c.y}px"/>
+  <g transform="translate(${c.x} ${c.y})"><g class="orbit-${(idx % 3) + 1}"><circle cx="${orbitRx}" cy="0" r="3.2" fill="${c.accent}"/></g></g>
+  <rect x="${c.x - 70}" y="${c.y + half - 12}" width="140" height="34" rx="6" fill="#141414" fill-opacity=".92" stroke="#474747"/>
+  <text x="${c.x}" y="${c.y + half + 2}" text-anchor="middle" fill="#dedede" font-size="9.5" font-weight="600" letter-spacing=".8" class="mono">0${idx + 1} / ${escape(mission.name.toUpperCase())}</text>
+  <text x="${c.x}" y="${c.y + half + 15}" text-anchor="middle" fill="${c.accent}" font-size="8" letter-spacing=".6" class="mono">${escape(c.tag)} (${repoCount}) ↗</text>
+</g>
+</svg>
+`;
+    return writeFile(new URL(`assets/holo-0${idx + 1}-${mission.id}.svg`, root), sliceSvg);
+  });
+
+  const bioSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="248" viewBox="0 0 1280 248" role="img" aria-labelledby="title description">
+<title id="title">Antonio Chapinal — Cloud &amp; AI Solutions Engineer at Microsoft</title>
+<desc id="description">Commander dossier for Antonio Chapinal (@chapi-dev): Cloud and AI Solutions Engineer at Microsoft specializing in Azure AI Foundry, Microsoft Fabric, AKS, Azure SRE Agent, Azure Arc, SQL Managed Instance, GitHub Copilot Enterprise and Quantum Computing.</desc>
+<style>
+  text{font-family:"Segoe UI",Aptos,Calibri,sans-serif}
+  .mono{font-family:Consolas,"Courier New",monospace}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+  .signal{animation:pulse 3s ease-in-out infinite}
+  @media(prefers-reduced-motion:reduce){.signal{animation:none!important}}
+</style>
+<rect width="1280" height="248" rx="12" fill="#141414" stroke="#383838" stroke-width="1.5"/>
+<rect x="20" y="18" width="1240" height="34" rx="7" fill="#1d1d1d" stroke="#333333"/>
+<circle cx="38" cy="35" r="4" fill="#fd8ea1" class="signal"/>
+<text x="52" y="39" fill="#fd8ea1" font-size="10" font-weight="600" letter-spacing="1.8" class="mono">COMMANDER DOSSIER // PROFILE TRANSMISSION</text>
+<text x="1244" y="39" text-anchor="end" fill="#919191" font-size="9.5" letter-spacing="1.4" class="mono">ROLE: CLOUD &amp; AI ENGINEER @ MICROSOFT</text>
+<text x="28" y="96" fill="#dedede" font-size="36" font-weight="600" letter-spacing="-1">Antonio Chapinal</text>
+<text x="342" y="94" fill="#fd8ea1" font-size="13" font-weight="600" letter-spacing="1.4" class="mono">// CLOUD, AI &amp; QUANTUM ARCHITECTURES</text>
+<text x="28" y="124" fill="#b0b0b0" font-size="14">Hola, soy Antonio. Ingeniero de Cloud e IA en Microsoft. Diseño arquitecturas reales de agentes autónomos, redes privadas</text>
+<text x="28" y="146" fill="#b0b0b0" font-size="14">Zero-Trust, plataformas Kubernetes/DevSecOps, operaciones autónomas con SRE Agent y computación cuántica en Q#.</text>
+<g transform="translate(28 166)">
+  <rect width="292" height="62" rx="8" fill="#1b1b1b" stroke="#333333"/>
+  <text x="14" y="22" fill="#fd8ea1" font-size="9.5" font-weight="600" letter-spacing="1.2" class="mono">01 // AGENTIC AI &amp; COPILOT</text>
+  <text x="14" y="40" fill="#dedede" font-size="12" font-weight="600">Azure AI Foundry · Copilot · MCP</text>
+  <text x="14" y="54" fill="#919191" font-size="9.5" class="mono">Multi-Agent · Governance · FinOps</text>
+</g>
+<g transform="translate(334 166)">
+  <rect width="292" height="62" rx="8" fill="#1b1b1b" stroke="#333333"/>
+  <text x="14" y="22" fill="#4da6ff" font-size="9.5" font-weight="600" letter-spacing="1.2" class="mono">02 // DATA &amp; PRIVATE NETWORKS</text>
+  <text x="14" y="40" fill="#dedede" font-size="12" font-weight="600">Microsoft Fabric · SQL MI · OneLake</text>
+  <text x="14" y="54" fill="#919191" font-size="9.5" class="mono">Private Link · VNet Gateway · NFS</text>
+</g>
+<g transform="translate(640 166)">
+  <rect width="292" height="62" rx="8" fill="#1b1b1b" stroke="#333333"/>
+  <text x="14" y="22" fill="#4ade80" font-size="9.5" font-weight="600" letter-spacing="1.2" class="mono">03 // CLOUD-NATIVE, SRE &amp; HYBRID</text>
+  <text x="14" y="40" fill="#dedede" font-size="12" font-weight="600">AKS · Azure SRE Agent · Azure Arc</text>
+  <text x="14" y="54" fill="#919191" font-size="9.5" class="mono">GHAS · Sigstore · Defender · vWAN</text>
+</g>
+<g transform="translate(946 166)">
+  <rect width="306" height="62" rx="8" fill="#1b1b1b" stroke="#333333"/>
+  <text x="14" y="22" fill="#fbbf24" font-size="9.5" font-weight="600" letter-spacing="1.2" class="mono">04 // QUANTUM &amp; INFRASTRUCTURE</text>
+  <text x="14" y="40" fill="#dedede" font-size="12" font-weight="600">Microsoft Q# · Qiskit · Bicep · Go</text>
+  <text x="14" y="54" fill="#919191" font-size="9.5" class="mono">Adiabatic QAOA · QEC · Rust · IaC</text>
+</g>
+</svg>
+`;
+
+  const desktopSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-labelledby="title description">
+<title id="title">DISTANCE - Interactive 3D Microsoft Technology Star Map by Antonio Chapinal</title>
+<desc id="description">Animated 3D Galactic Holomap featuring eight procedural planetary systems and 23 repositories across Azure AI Foundry, Microsoft Fabric, Q# Quantum, AKS, Azure SRE Agent, Azure Arc, Azure SQL MI and GitHub Copilot Enterprise.</desc>
+${holoSharedDefs}
+${holoSceneBody}
 </svg>
 `;
 
@@ -260,7 +345,7 @@ ${moonDots}
 <text x="26" y="308" fill="#919191" font-size="10" class="mono">${escape(stackLine)}</text>
 <line x1="26" y1="319" x2="284" y2="319" stroke="#2f2f2f"/>
 <text x="26" y="335" fill="#dedede" font-size="9.5" class="mono">◐ ${moons.length} MOONS · ${escape(mission.telemetry.gravity)}</text>
-<text x="284" y="335" text-anchor="end" fill="${c.accent}" font-size="9.5" font-weight="600" class="mono">FLY 3D ↗</text>
+<text x="284" y="335" text-anchor="end" fill="${c.accent}" font-size="9.5" font-weight="600" class="mono">OPEN REPO ↗</text>
 </svg>
 `;
     return writeFile(new URL(`assets/sys-0${idx + 1}-${mission.id}.svg`, root), svg);
@@ -269,11 +354,13 @@ ${moonDots}
   await mkdir(new URL('assets/', root), { recursive: true });
   await Promise.all([
     writeFile(new URL('assets/distance-frame.png', root), Buffer.from(heroFrame.png.split(',')[1], 'base64')),
+    writeFile(new URL('assets/commander-bio.svg', root), bioSvg),
     writeFile(new URL('assets/distance.svg', root), desktopSvg),
     writeFile(new URL('assets/distance-mobile.svg', root), mobileSvg),
+    ...sliceOutputs,
     ...cardOutputs,
   ]);
-  console.log('Rendered all 8 Three.js worlds into the animated 3D Holomap cover and 8 interactive system HUD cards.');
+  console.log('Rendered Commander Dossier, 8-slice interactive 3D Holomap, and 8 clickable system HUD cards.');
 } finally {
   await browser?.close();
   server.kill();
