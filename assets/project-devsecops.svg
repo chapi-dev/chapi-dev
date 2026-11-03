@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="260" viewBox="0 0 600 260" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">SOFTWARE SUPPLY CHAIN / SHIP IT. PROVE IT.</title>
+  <desc id="description">GitOps, signed artifacts and policy enforcement. A verified shield connected to a delivery pipeline.</desc>
+  <defs>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6574a1" stop-opacity=".55"/><stop offset=".5" stop-color="#22304c" stop-opacity=".3"/><stop offset="1" stop-color="#5ce4cf" stop-opacity=".35"/>
+    </linearGradient>
+    <linearGradient id="type" x1="0" y1="0" x2="1" y2=".5">
+      <stop stop-color="#fff"/><stop offset=".48" stop-color="#e0dcff"/><stop offset="1" stop-color="#7cf5d2"/>
+    </linearGradient>
+    <radialGradient id="atmosphere">
+      <stop stop-color="#4f46a8" stop-opacity=".34"/><stop offset="1" stop-color="#4f46a8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sphere" cx=".35" cy=".25" r=".8">
+      <stop stop-color="#193344"/><stop offset=".55" stop-color="#0b1d2c"/><stop offset="1" stop-color="#070b18"/>
+    </radialGradient>
+    <linearGradient id="orb" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b4a1ff"/><stop offset=".5" stop-color="#63cde8"/><stop offset="1" stop-color="#78ffce"/>
+    </linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" stroke="#647ba6" stroke-opacity=".065"/>
+    </pattern>
+    <clipPath id="frame"><rect width="600" height="260" rx="24"/></clipPath>
+    <radialGradient id="card-glow"><stop stop-color="#ffc09a" stop-opacity=".13"/><stop offset="1" stop-color="#ffc09a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', Inter, Arial, sans-serif; }
+    .mono { font-family: 'Cascadia Code', 'SFMono-Regular', Consolas, monospace; }
+    .orbit { animation: orbit 60s linear infinite; }
+    .reverse { animation: orbit 85s linear infinite reverse; }
+    .beacon { animation: beacon 4s ease-in-out infinite; }
+    @keyframes orbit { to { transform: rotate(360deg); } }
+    @keyframes beacon { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .orbit, .reverse, .beacon { animation: none; }
+    }
+  </style>
+  <g clip-path="url(#frame)">
+    <rect width="600" height="260" fill="#080d19"/>
+    <rect width="600" height="260" fill="url(#grid)"/>
+    <ellipse cx="495" cy="130" rx="210" ry="195" fill="url(#card-glow)"/>
+    <path d="M28 52H51" stroke="#ffc09a" stroke-width="2"/>
+    <text x="62" y="56" fill="#ffc09a" font-size="11" class="mono" letter-spacing="1.4">SOFTWARE SUPPLY CHAIN</text>
+    <text x="28" y="122" fill="#f1f5ff" font-size="34" font-weight="750" letter-spacing="-1">SHIP IT.</text>
+    <text x="28" y="165" fill="#f1f5ff" font-size="34" font-weight="750" letter-spacing="-1">PROVE IT.</text>
+    <text x="30" y="229" fill="#8d9cb7" font-size="11" class="mono" letter-spacing="1.6">EXPERIMENT 04</text>
+    <path d="M554 222H573 M565 214L573 222L565 230" stroke="#ffc09a" stroke-width="1.5"/>
+    <g transform="translate(463 138)">
+  <path d="M0 -73L58 -49V-3C58 35 27 59 0 76C-27 59 -58 35 -58 -3V-49Z" fill="#2a1c24" stroke="#f1b08a" stroke-opacity=".65"/>
+  <path d="M0 -58L45 -39V-3C45 26 23 46 0 61C-23 46 -45 26 -45 -3V-39Z" stroke="#f1b08a" stroke-opacity=".18"/>
+  <path d="M-22 -1L-6 15L25 -17" stroke="#ffd1ab" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M-88 -32H-58 M58 -32H88 M-88 30H-48 M48 30H88" stroke="#e9a47e" stroke-opacity=".5"/>
+  <circle cx="-88" cy="-32" r="4" fill="#ffc297"/><circle cx="88" cy="-32" r="4" fill="#ffc297"/>
+  <circle cx="-88" cy="30" r="4" fill="#ffc297"/><circle cx="88" cy="30" r="4" fill="#ffc297"/>
+</g>
+    <rect x=".5" y=".5" width="599" height="259" rx="23.5" stroke="url(#edge)"/>
+  </g>
+</svg>
