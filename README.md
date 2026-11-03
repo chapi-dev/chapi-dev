@@ -1,106 +1,68 @@
-<picture>
-  <source media="(max-width: 640px)" srcset="./assets/hero-mobile.svg">
-  <img src="./assets/hero.svg" width="100%" alt="CHAPI.DEV - Antonio Chapinal Reyes. Build the unexpected. Cloud, AI and quantum computing, illustrated by an original animated orbital system.">
-</picture>
+<h1 align="center">hey, i'm antonio.</h1>
 
 <p align="center">
-  <a href="#selected-work">Selected work</a> &nbsp; / &nbsp;
-  <a href="#the-toolkit">The toolkit</a> &nbsp; / &nbsp;
-  <a href="#beyond-the-build">Beyond the build</a>
+  <samp>cloud &amp; AI engineer @ Microsoft</samp><br>
+  <samp>currently keeping a tiny solar system in a stable-ish orbit.</samp>
 </p>
-
-### Big ideas. Working systems.
-
-I'm **Antonio**, a **Cloud & AI Engineer at Microsoft**. I connect cloud infrastructure, intelligent agents and a healthy obsession with understanding how things actually work.
-
-This is my open lab: runnable experiments, reference architectures and hands-on courses. Less slideware. More source code.
-
-## Selected work
-
-<table>
-<tr>
-<td width="50%" valign="top">
-<a href="https://github.com/chapi-dev/agent-hosting-lab">
-  <img src="./assets/project-agents.svg" width="100%" alt="Agent systems: AI that leaves the lab.">
-</a>
-
-### [Agent Hosting Lab](https://github.com/chapi-dev/agent-hosting-lab)
-
-One agent. Four deployments. Real measurements. Comparing self-hosted, hosted and hybrid agent architectures on Azure.
-
-<sub><b>PYTHON / MICROSOFT FOUNDRY / CONTAINER APPS</b></sub>
-
-</td>
-<td width="50%" valign="top">
-<a href="https://github.com/chapi-dev/fabric-private-networking-cookbook">
-  <img src="./assets/project-cloud.svg" width="100%" alt="Private by design: cloud without the exposure.">
-</a>
-
-### [Fabric Private Networking](https://github.com/chapi-dev/fabric-private-networking-cookbook)
-
-An end-to-end cookbook for private connectivity in Microsoft Fabric: endpoints, data sources and on-premises networks.
-
-<sub><b>MICROSOFT FABRIC / PRIVATE LINK / BICEP</b></sub>
-
-</td>
-</tr>
-<tr>
-<td width="50%" valign="top">
-<a href="https://github.com/chapi-dev/Introduction-to-Quantum-Computing">
-  <img src="./assets/project-quantum.svg" width="100%" alt="Quantum field notes: think in superposition.">
-</a>
-
-### [From Zero to Qubit](https://github.com/chapi-dev/Introduction-to-Quantum-Computing)
-
-Ten hands-on levels from your first quantum circuit to error correction, with parallel Qiskit and Q# implementations.
-
-<sub><b>QISKIT / Q# / JUPYTER NOTEBOOKS</b></sub>
-
-</td>
-<td width="50%" valign="top">
-<a href="https://github.com/chapi-dev/telco-devsecops-demo">
-  <img src="./assets/project-devsecops.svg" width="100%" alt="Software supply chain: ship it, prove it.">
-</a>
-
-### [Telco, Meet DevSecOps](https://github.com/chapi-dev/telco-devsecops-demo)
-
-A VNF/CNF lifecycle built on GitHub and Azure: GitOps, signed artifacts, policy enforcement and deployable infrastructure.
-
-<sub><b>AKS / ARGO CD / SIGSTORE / GITHUB ACTIONS</b></sub>
-
-</td>
-</tr>
-</table>
-
-**Also in the lab:** [a cross-platform photo editor](https://github.com/chapi-dev/collage-studio), [adiabatic quantum computing](https://github.com/chapi-dev/Adiabatic-Quantum-Computing), [Fabric to Foundry over Private Link](https://github.com/chapi-dev/fabric-foundry-private-link) and [a hands-on GitHub Copilot workshop](https://github.com/chapi-dev/ghcopilot-optimization-workshop).
-
-## The toolkit
-
-| Layer | What I build with |
-| :--- | :--- |
-| **Cloud & platforms** | Azure, Kubernetes, Container Apps, Bicep, Terraform |
-| **AI & developer experience** | Microsoft Foundry, AI agents, MCP, GitHub Copilot |
-| **Code & automation** | Python, TypeScript, Go, Rust, PowerShell, GitHub Actions |
-| **Data & connectivity** | Microsoft Fabric, Private Link, hybrid networking |
-| **Quantum** | Qiskit, Q#, Jupyter, a willingness to question the obvious |
-
-## Beyond the build
-
-Curiosity doesn't stop at the last commit. Sometimes the next challenge is a quantum algorithm. Sometimes it's a new game.
-
-<details>
-<summary><b>Open the side quest</b></summary>
 
 <br>
 
-**Halo. Ratchet & Clank. Crash Bandicoot.** Different universes, same instinct: explore the map, understand the mechanics, take on the next impossible-looking challenge.
+<h2 align="center">my side projects have developed gravity.</h2>
 
-That energy makes it into the code, too.
+<p align="center">
+  <samp>six unlikely worlds. a few restless satellites. absolutely no respect for scale.</samp>
+</p>
+
+<a href="#choose-your-landing"><img src="./assets/universe.svg" width="100%" alt="Antonio's illustrated pocket universe: six invented planets spin and orbit a smiling star, with their own travelling satellites. Choose a landing below to explore their repositories."></a>
+
+<h3 align="center">choose your landing</h3>
+
+<p align="center"><samp>each little world below is a real project. click one to visit.</samp></p>
+
+<!-- SVG image links are inert on GitHub, so landing pads use ordinary HTML links. -->
+<div align="center"><a href="https://github.com/chapi-dev/Introduction-to-Quantum-Computing" title="Qubit-9: quantum computing, from your first qubit to error correction"><img align="top" src="./assets/land-qubit-9.svg" width="16%" alt="Qubit-9 - quantum computing course"></a><a href="https://github.com/chapi-dev/agent-hosting-lab" title="Foundria: one agent, four deployment architectures"><img align="top" src="./assets/land-foundria.svg" width="16%" alt="Foundria - Agent Hosting Lab"></a><a href="https://github.com/chapi-dev/fabric-private-networking-cookbook" title="Nimbus-7: private networking for Microsoft Fabric"><img align="top" src="./assets/land-nimbus-7.svg" width="16%" alt="Nimbus-7 - Fabric private networking"></a><a href="https://github.com/chapi-dev/telco-devsecops-demo" title="Gitopia: GitOps, signed artifacts and the software supply chain"><img align="top" src="./assets/land-gitopia.svg" width="16%" alt="Gitopia - Telco DevSecOps"></a><a href="https://github.com/chapi-dev/collage-studio" title="Pixelune: a cross-platform photo collage studio"><img align="top" src="./assets/land-pixelune.svg" width="16%" alt="Pixelune - Collage Studio"></a><a href="https://github.com/chapi-dev/ghcopilot-optimization-workshop" title="Copilotia: a hands-on GitHub Copilot workshop"><img align="top" src="./assets/land-copilotia.svg" width="16%" alt="Copilotia - GitHub Copilot workshop"></a></div>
+
+<p align="center">
+  <samp><a href="https://github.com/chapi-dev/Introduction-to-Quantum-Computing">Qubit-9</a> / <a href="https://github.com/chapi-dev/agent-hosting-lab">Foundria</a> / <a href="https://github.com/chapi-dev/fabric-private-networking-cookbook">Nimbus-7</a></samp><br>
+  <samp><a href="https://github.com/chapi-dev/telco-devsecops-demo">Gitopia</a> / <a href="https://github.com/chapi-dev/collage-studio">Pixelune</a> / <a href="https://github.com/chapi-dev/ghcopilot-optimization-workshop">Copilotia</a></samp>
+</p>
+
+<p align="center">
+  <sub><i>please don't observe the cat. we haven't committed its state yet.</i></sub>
+</p>
+
+<details>
+<summary><b>Lost in space? Unfold the flight plan.</b></summary>
+
+<br>
+
+| World | What lives there |
+| :--- | :--- |
+| [**Qubit-9**](https://github.com/chapi-dev/Introduction-to-Quantum-Computing) | A cat-eared quantum world. Ten levels of Qiskit and Q#, from first circuits to error correction. |
+| [**Foundria**](https://github.com/chapi-dev/agent-hosting-lab) | A planet-sized agent workshop. One agent, four deployments, measured on real infrastructure. |
+| [**Nimbus-7**](https://github.com/chapi-dev/fabric-private-networking-cookbook) | A very private cloud. Microsoft Fabric connectivity, endpoints and hybrid networks. |
+| [**Gitopia**](https://github.com/chapi-dev/telco-devsecops-demo) | Where cargo needs a signature. GitOps, AKS, supply-chain security and policy enforcement. |
+| [**Pixelune**](https://github.com/chapi-dev/collage-studio) | A moon made of little pictures. A photo collage editor for web, iOS and Android. |
+| [**Copilotia**](https://github.com/chapi-dev/ghcopilot-optimization-workshop) | An outpost for curious builders. A hands-on GitHub Copilot workshop. |
 
 </details>
 
 <br>
 
-<img src="./assets/footer.svg" width="100%" alt="Stay curious. Build the next thing. CHAPI.DEV / End of transmission.">
+<p align="center">
+  <samp>psst. the wormhole is not a decoration.</samp><br>
+  <a href="https://github.com/chapi-dev/Adiabatic-Quantum-Computing" title="Take the quantum detour"><img src="./assets/wormhole.svg" width="112" alt="Enter the wormhole - explore adiabatic quantum computing"></a>
+</p>
 
-<p align="center"><sub>Personal projects, experiments and opinions. Not official Microsoft guidance.</sub></p>
+<h3 align="center">back on this planet</h3>
+
+<p align="center">
+  I build cloud infrastructure, AI agents and experiments you can actually run.<br>
+  Occasionally, the experiments escape and become small illustrated planets.
+</p>
+
+<p align="center">
+  <samp>Azure &middot; Microsoft Foundry &middot; Python &middot; TypeScript &middot; Qiskit &middot; Q#</samp>
+</p>
+
+<p align="center"><sub>A personal universe. Not an official Microsoft galaxy.</sub></p>

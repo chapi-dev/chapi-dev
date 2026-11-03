@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150" role="img" aria-labelledby="title description" fill="none">
+<title id="title">An entirely suspicious wormhole</title>
+<desc id="description">A tiny purple wormhole with a travelling golden star. Enter it to explore adiabatic quantum computing.</desc>
+<defs></defs>
+<style>
+  text{font-family:"Segoe UI",Aptos,Arial,sans-serif}
+  .mono{font-family:Consolas,"Courier New",monospace}
+  .moving{transform-origin:0 0}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes glow{0%,100%{opacity:.45}50%{opacity:1}}
+  .twinkle{animation:glow 5s ease-in-out infinite}
+
+  @media(prefers-reduced-motion:reduce){.moving,.twinkle{animation:none!important}}
+</style>
+<g transform="translate(100 76)">
+      <ellipse rx="65" ry="38" fill="#29233e" stroke="#9c8bba" stroke-width="2"/>
+      <ellipse rx="49" ry="29" fill="#211e34" stroke="#b49dcb" stroke-width="1.5" transform="rotate(-14)"/>
+      <ellipse rx="33" ry="20" fill="#181a2b" stroke="#c1abd0" stroke-width="1.5" transform="rotate(-30)"/>
+      <ellipse rx="18" ry="12" fill="#101825" stroke="#cdb8d8" stroke-opacity=".7" transform="rotate(-50)"/>
+      <g class="moving" style="animation:spin 9s linear infinite"><path d="M0 -54L3 -45L12 -42L3 -39L0 -30L-3 -39L-12 -42L-3 -45Z" fill="#ebcf95" stroke="#8e785f" stroke-width="1"/></g>
+      <path d="M-83 -17L-81 -11L-75 -9L-81 -7L-83 -1L-85 -7L-91 -9L-85 -11Z" fill="#c6afd5"/>
+      <text y="66" fill="#a4917d" text-anchor="middle" font-size="10" letter-spacing="2" class="mono">PROBABLY SAFE</text>
+    </g>
+</svg>

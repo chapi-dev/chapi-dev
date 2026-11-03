@@ -1,265 +1,188 @@
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
-const assets = fileURLToPath(new URL('../assets/', import.meta.url));
-const sans = "'Segoe UI', Inter, Arial, sans-serif";
-const mono = "'Cascadia Code', 'SFMono-Regular', Consolas, monospace";
+const assets = new URL('../assets/', import.meta.url);
+const worlds = [
+  { slug: 'qubit-9', name: 'QUBIT-9', kind: 'QUANTUM', repo: 'Introduction-to-Quantum-Computing', color: '#cfb7eb', size: 148, rx: 170, ry: 96, phase: 2.9, period: 46, spin: 104, moon: 'cat', moonPeriod: 11 },
+  { slug: 'foundria', name: 'FOUNDRIA', kind: 'AI AGENTS', repo: 'agent-hosting-lab', color: '#f0b29b', size: 168, rx: 260, ry: 135, phase: 5.25, period: 72, spin: 137, moon: 'robot', moonPeriod: 14 },
+  { slug: 'nimbus-7', name: 'NIMBUS-7', kind: 'PRIVATE CLOUD', repo: 'fabric-private-networking-cookbook', color: '#b5dbc9', size: 170, rx: 335, ry: 173, phase: 0.3, period: 100, spin: 159, moon: 'satellite', moonPeriod: 17 },
+  { slug: 'gitopia', name: 'GITOPIA', kind: 'DEVSECOPS', repo: 'telco-devsecops-demo', color: '#eac18b', size: 154, rx: 395, ry: 211, phase: 3.6, period: 130, spin: 123, moon: 'cargo', moonPeriod: 13 },
+  { slug: 'pixelune', name: 'PIXELUNE', kind: 'CREATIVE CODE', repo: 'collage-studio', color: '#bdd2ef', size: 164, rx: 450, ry: 248, phase: 1.15, period: 160, spin: 181, moon: 'camera', moonPeriod: 19 },
+  { slug: 'copilotia', name: 'COPILOTIA', kind: 'SIDE QUESTS', repo: 'ghcopilot-optimization-workshop', color: '#c4d5a5', size: 164, rx: 500, ry: 285, phase: 4.85, period: 195, spin: 211, moon: 'rocket', moonPeriod: 16 },
+];
+const escape = text => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+const number = value => value.toFixed(3);
+const position = (rx, ry, angle) => `translate(${number(rx * Math.cos(angle))}px, ${number(ry * Math.sin(angle))}px)`;
 
-const point = (x, y) => `${x.toFixed(2)},${y.toFixed(2)}`;
-const line = (points, close = false) =>
-  `M${points.map(([x, y]) => point(x, y)).join(' L')}${close ? ' Z' : ''}`;
+function route(name, rx, ry, phase, plane) {
+  const frames = Array.from({ length: 73 }, (_, index) => {
+    const angle = phase + (index / 72) * Math.PI * 2;
+    const opacity = plane ? `opacity:${(Math.sin(angle) >= 0) === (plane === 'front') ? 1 : 0};` : '';
+    return `${number(index / 72 * 100)}%{transform:${position(rx, ry, angle)};${opacity}}`;
+  }).join('');
+  return `@keyframes ${name}{${frames}}`;
+}
 
-function document(width, height, title, description, body, extraDefs = '') {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" fill="none" role="img" aria-labelledby="title description">
-  <title id="title">${title}</title>
-  <desc id="description">${description}</desc>
-  <defs>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#6574a1" stop-opacity=".55"/><stop offset=".5" stop-color="#22304c" stop-opacity=".3"/><stop offset="1" stop-color="#5ce4cf" stop-opacity=".35"/>
-    </linearGradient>
-    <linearGradient id="type" x1="0" y1="0" x2="1" y2=".5">
-      <stop stop-color="#fff"/><stop offset=".48" stop-color="#e0dcff"/><stop offset="1" stop-color="#7cf5d2"/>
-    </linearGradient>
-    <radialGradient id="atmosphere">
-      <stop stop-color="#4f46a8" stop-opacity=".34"/><stop offset="1" stop-color="#4f46a8" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="sphere" cx=".35" cy=".25" r=".8">
-      <stop stop-color="#193344"/><stop offset=".55" stop-color="#0b1d2c"/><stop offset="1" stop-color="#070b18"/>
-    </radialGradient>
-    <linearGradient id="orb" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#b4a1ff"/><stop offset=".5" stop-color="#63cde8"/><stop offset="1" stop-color="#78ffce"/>
-    </linearGradient>
-    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="5"/>
-    </filter>
-    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
-      <path d="M48 0H0V48" stroke="#647ba6" stroke-opacity=".065"/>
-    </pattern>
-    <clipPath id="frame"><rect width="${width}" height="${height}" rx="24"/></clipPath>
-${extraDefs ? `    ${extraDefs}\n` : ''}  </defs>
-  <style>
-    text { font-family: ${sans}; }
-    .mono { font-family: ${mono}; }
-    .orbit { animation: orbit 60s linear infinite; }
-    .reverse { animation: orbit 85s linear infinite reverse; }
-    .beacon { animation: beacon 4s ease-in-out infinite; }
-    @keyframes orbit { to { transform: rotate(360deg); } }
-    @keyframes beacon { 0%, 100% { opacity: .4; } 50% { opacity: 1; } }
-    @media (prefers-reduced-motion: reduce) {
-      .orbit, .reverse, .beacon { animation: none; }
-    }
-  </style>
-  <g clip-path="url(#frame)">
-    <rect width="${width}" height="${height}" fill="#080d19"/>
-    ${body}
-    <rect x=".5" y=".5" width="${width - 1}" height="${height - 1}" rx="23.5" stroke="url(#edge)"/>
-  </g>
+function sprite(world) {
+  return `<image x="${-world.size / 2}" y="${-world.size / 2}" width="${world.size}" height="${world.size}" href="data:image/png;base64,${world.image}"/>`;
+}
+
+function satellite(kind, color) {
+  const outline = 'stroke="#695b63" stroke-width="1.6" stroke-linejoin="round"';
+  switch (kind) {
+    case 'cat':
+      return `<path d="M-10 5V-10L-3 -5H3L10 -10V5Q0 15 -10 5Z" fill="#efe1c9" ${outline}/><circle cx="-4" cy="2" r="1.2" fill="#695b63"/><circle cx="4" cy="2" r="1.2" fill="#695b63"/><path d="M-2 6Q0 8 2 6" ${outline}/>`;
+    case 'robot':
+      return `<path d="M0 -10V-16" ${outline}/><circle cy="-17" r="2.5" fill="#e9b08d"/><rect x="-12" y="-10" width="24" height="21" rx="6" fill="#eee0c7" ${outline}/><rect x="-8" y="-5" width="16" height="10" rx="3" fill="#334d61"/><path d="M-5 0H-2 M2 0H5" stroke="${color}" stroke-width="2"/><path d="M-15 -1H-12 M12 -1H15" ${outline}/>`;
+    case 'satellite':
+      return `<rect x="-8" y="-9" width="16" height="18" rx="3" fill="#eee0c7" ${outline}/><path d="M-8 0H-13 M8 0H13" ${outline}/><rect x="-25" y="-8" width="12" height="16" rx="1" fill="#7eacc8" ${outline}/><rect x="13" y="-8" width="12" height="16" rx="1" fill="#7eacc8" ${outline}/><path d="M-19 -8V8 M19 -8V8 M-25 0H-13 M13 0H25" stroke="#e9dfc9" stroke-width=".7"/><path d="M0 -9L3 -15" ${outline}/>`;
+    case 'cargo':
+      return `<path d="M0 -13L13 -6V8L0 15L-13 8V-6Z" fill="#e9bd7a" ${outline}/><path d="M-13 -6L0 1L13 -6 M0 1V15 M-6 -10L7 -3" ${outline}/><path d="M3 5L6 8L10 3" stroke="#586b58" stroke-width="2" fill="none"/>`;
+    case 'camera':
+      return `<rect x="-15" y="-9" width="30" height="20" rx="4" fill="#d2c8bc" ${outline}/><path d="M-10 -9V-13H-2V-9" ${outline}/><circle cx="3" cy="1" r="7" fill="#334d61" ${outline}/><circle cx="3" cy="1" r="3" fill="${color}"/><rect x="-11" y="-5" width="5" height="3" rx="1" fill="#eee0c7"/>`;
+    default:
+      return `<path d="M0 -18Q13 -6 9 10L0 15L-9 10Q-13 -6 0 -18Z" fill="#eee0c7" ${outline}/><path d="M-8 3L-15 13L-8 11 M8 3L15 13L8 11" fill="${color}" ${outline}/><circle cy="-2" r="5" fill="#7daec6" ${outline}/><path d="M-4 15L0 24L4 15" fill="#edb475" stroke="#b5836b" stroke-width="1.4"/>`;
+  }
+}
+
+function planet(world, movement = true) {
+  const orbitX = world.size * 0.62;
+  const orbitY = world.size * 0.29;
+  const satelliteMarkup = satellite(world.moon, world.color);
+  return `<g class="${movement ? `travel-${world.slug} moving` : ''}">
+    <ellipse rx="${orbitX}" ry="${orbitY}" stroke="${world.color}" stroke-opacity=".3" stroke-width="1" stroke-dasharray="2 6"/>
+    <g class="moon-back-${world.slug} moving">${satelliteMarkup}</g>
+    <g class="spin-${world.slug} moving">${sprite(world)}</g>
+    <g class="moon-front-${world.slug} moving">${satelliteMarkup}</g>
+  </g>`;
+}
+
+function worldStyles(world) {
+  const moonX = world.size * 0.62;
+  const moonY = world.size * 0.29;
+  const phase = world.phase / 2;
+  const front = Math.sin(phase) >= 0;
+  return `${route(`travel-${world.slug}`, world.rx, world.ry, world.phase)}
+    ${route(`moon-front-${world.slug}`, moonX, moonY, phase, 'front')}
+    ${route(`moon-back-${world.slug}`, moonX, moonY, phase, 'back')}
+    .travel-${world.slug}{transform:${position(world.rx, world.ry, world.phase)};animation:travel-${world.slug} ${world.period}s linear infinite}
+    .spin-${world.slug}{animation:spin ${world.spin}s linear infinite}
+    .moon-front-${world.slug}{transform:${position(moonX, moonY, phase)};opacity:${front ? 1 : 0};animation:moon-front-${world.slug} ${world.moonPeriod}s linear infinite}
+    .moon-back-${world.slug}{transform:${position(moonX, moonY, phase)};opacity:${front ? 0 : 1};animation:moon-back-${world.slug} ${world.moonPeriod}s linear infinite}`;
+}
+
+function document(width, height, title, description, body, styles = '', defs = '') {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description" fill="none">
+<title id="title">${escape(title)}</title>
+<desc id="description">${escape(description)}</desc>
+<defs>${defs}</defs>
+<style>
+  text{font-family:"Segoe UI",Aptos,Arial,sans-serif}
+  .mono{font-family:Consolas,"Courier New",monospace}
+  .moving{transform-origin:0 0}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes glow{0%,100%{opacity:.45}50%{opacity:1}}
+  .twinkle{animation:glow 5s ease-in-out infinite}
+${styles}
+  @media(prefers-reduced-motion:reduce){.moving,.twinkle{animation:none!important}}
+</style>
+${body}
 </svg>
 `;
 }
 
-function stars(width, height, count = 48) {
-  return Array.from({ length: count }, (_, i) => {
-    const x = ((i * 193.73 + 19) % width).toFixed(2);
-    const y = ((i * 71.19 + 31) % height).toFixed(2);
-    return `<circle cx="${x}" cy="${y}" r="${i % 7 === 0 ? 1.4 : 0.7}" fill="#c6d9fc" opacity="${i % 7 === 0 ? 0.55 : 0.18}"/>`;
-  }).join('\n');
-}
-
-function project(x, y, z) {
-  const a = 0.48;
-  const b = -0.32;
-  const yy = y * Math.cos(a) - z * Math.sin(a);
-  const zz = y * Math.sin(a) + z * Math.cos(a);
-  return [x * Math.cos(b) - yy * Math.sin(b), x * Math.sin(b) + yy * Math.cos(b), zz];
-}
-
-function orbitalSystem(x, y, scale = 1) {
-  const radius = 158;
-  const paths = [];
-  for (let meridian = 0; meridian < 12; meridian++) {
-    const phi = (meridian / 12) * Math.PI * 2;
-    const points = Array.from({ length: 81 }, (_, i) => {
-      const theta = (i / 80) * Math.PI * 2;
-      return project(radius * Math.cos(theta) * Math.cos(phi), radius * Math.sin(theta), radius * Math.cos(theta) * Math.sin(phi));
-    });
-    paths.push(`<path d="${line(points)}" stroke="url(#orb)" stroke-opacity=".21" stroke-width=".8"/>`);
-  }
-  for (let latitude = -3; latitude <= 3; latitude++) {
-    const theta = (latitude / 4) * Math.PI / 2;
-    const ring = radius * Math.cos(theta);
-    const points = Array.from({ length: 81 }, (_, i) => {
-      const phi = (i / 80) * Math.PI * 2;
-      return project(ring * Math.cos(phi), radius * Math.sin(theta), ring * Math.sin(phi));
-    });
-    paths.push(`<path d="${line(points)}" stroke="url(#orb)" stroke-opacity=".22" stroke-width=".8"/>`);
-  }
-  const nodes = Array.from({ length: 42 }, (_, i) => {
-    const y = 1 - (i / 41) * 2;
-    const ring = Math.sqrt(1 - y * y);
-    const angle = i * Math.PI * (3 - Math.sqrt(5));
-    return project(radius * ring * Math.cos(angle), radius * y, radius * ring * Math.sin(angle));
-  }).filter(([, , z]) => z > 10);
-  const connections = [];
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      if (Math.hypot(nodes[i][0] - nodes[j][0], nodes[i][1] - nodes[j][1]) < 88) {
-        connections.push(`<path d="${line([nodes[i], nodes[j]])}" stroke="#81ead6" stroke-opacity=".19"/>`);
-      }
+function starfield() {
+  return Array.from({ length: 175 }, (_, i) => {
+    const x = 35 + (i * 193.73 + 19) % 1210;
+    const y = 90 + (i * 71.19 + 31) % 775;
+    if (i % 13 === 0) {
+      return `<path d="M${number(x - 3)} ${number(y)}H${number(x + 3)} M${number(x)} ${number(y - 3)}V${number(y + 3)}" stroke="#e5d5b9" stroke-opacity=".6" stroke-linecap="round"/>`;
     }
-  }
-  const ticks = Array.from({ length: 72 }, (_, i) => {
-    const angle = (i / 72) * Math.PI * 2;
-    const inner = i % 6 === 0 ? 200 : 205;
-    return `<path d="M${point(Math.cos(angle) * inner, Math.sin(angle) * inner)} L${point(Math.cos(angle) * 209, Math.sin(angle) * 209)}" stroke="#8da8cb" stroke-opacity="${i % 6 === 0 ? 0.55 : 0.2}"/>`;
+    return `<circle cx="${number(x)}" cy="${number(y)}" r="${i % 5 === 0 ? 1.8 : 0.9}" fill="${i % 3 === 0 ? '#d6c6e7' : '#e5d5b9'}" opacity="${i % 5 === 0 ? '.6' : '.25'}" ${i % 7 === 0 ? 'class="twinkle"' : ''}/>`;
   }).join('');
-  return `<g transform="translate(${x} ${y}) scale(${scale})">
-    <circle r="239" fill="url(#atmosphere)"/>
-    <circle r="159" stroke="#76e7d2" stroke-opacity=".32" stroke-width="8" filter="url(#glow)"/>
-    <circle r="158" fill="url(#sphere)" stroke="url(#orb)" stroke-opacity=".55"/>
-    ${paths.join('\n')}
-    ${connections.join('\n')}
-    ${nodes.map(([x, y], i) => `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${i % 4 === 0 ? 2.8 : 1.6}" fill="${i % 4 === 0 ? '#bcfff0' : '#72c9de'}" opacity=".85"/>`).join('\n')}
-    <g transform="rotate(-27)">
-      <ellipse rx="244" ry="76" stroke="#97ddf1" stroke-opacity=".12" stroke-width="9" filter="url(#glow)"/>
-      <ellipse rx="244" ry="76" stroke="url(#orb)" stroke-opacity=".7" stroke-width="1.5"/>
-      <ellipse rx="253" ry="84" stroke="#a9a0ff" stroke-opacity=".15" stroke-dasharray="3 9"/>
-      <circle cx="244" r="4" fill="#b9fff0"/>
-      <circle cx="244" r="9" fill="#96ffdc" opacity=".3" filter="url(#glow)"/>
-    </g>
-    <g class="orbit">
-      <circle r="188" stroke="#7595b8" stroke-opacity=".19" stroke-dasharray="2 12"/>
-      <path d="M0 -188 A188 188 0 0 1 133 -133" stroke="#ad9df6" stroke-width="2.5" stroke-linecap="round"/>
-      <circle cy="-188" r="4" fill="#c2b3ff"/>
-    </g>
-    <g class="reverse">
-      ${ticks}
-      <circle cy="209" r="3" fill="#78f8cd"/>
-    </g>
-    <path d="M-11 0H11 M0 -11V11" stroke="#c5fff0" stroke-opacity=".65"/>
-    <circle r="5" fill="#b2ffe5" class="beacon"/>
+}
+
+function sun() {
+  const points = Array.from({ length: 40 }, (_, i) => {
+    const angle = i / 40 * Math.PI * 2;
+    const radius = i % 2 ? 61 : 69;
+    return `${number(Math.cos(angle) * radius)},${number(Math.sin(angle) * radius)}`;
+  }).join(' ');
+  return `<g transform="translate(640 490)">
+    <circle r="110" fill="url(#sun-halo)"/>
+    <g class="moving" style="animation:spin 160s linear infinite"><polygon points="${points}" fill="#bd8f68" fill-opacity=".4" stroke="#ecc78e" stroke-opacity=".6" stroke-width="1.5"/></g>
+    <circle r="52" fill="#f3d695" stroke="#78634f" stroke-width="2"/>
+    <circle cx="-17" cy="-2" r="3.5" fill="#65554a"/><circle cx="17" cy="-2" r="3.5" fill="#65554a"/>
+    <ellipse cx="-28" cy="9" rx="7" ry="3" fill="#e3a18a" opacity=".65"/><ellipse cx="28" cy="9" rx="7" ry="3" fill="#e3a18a" opacity=".65"/>
+    <path d="M-8 9Q0 18 8 9" stroke="#78634f" stroke-width="2" stroke-linecap="round"/>
+    <text y="91" fill="#ddc8a9" text-anchor="middle" font-size="13" letter-spacing="2" class="mono">SOL-0</text>
   </g>`;
 }
 
-function hero(mobile = false) {
-  const width = mobile ? 720 : 1280;
-  const height = mobile ? 900 : 580;
-  const content = mobile
-    ? `<ellipse cx="360" cy="548" rx="340" ry="300" fill="url(#atmosphere)"/>
-      <text x="38" y="61" fill="#f3f5ff" font-size="27" font-weight="750" letter-spacing="2">CHAPI<tspan fill="#7cf5d2">.</tspan>DEV</text>
-      <circle cx="502" cy="52" r="4" fill="#8bf5ca" class="beacon"/>
-      <text x="517" y="58" fill="#b9c9cf" font-size="14" class="mono">BUILD MODE: ON</text>
-      <text x="40" y="127" fill="#9caac3" font-size="20" letter-spacing="2.2">ANTONIO CHAPINAL REYES</text>
-      <text x="34" y="225" fill="#f4f4fd" font-size="85" font-weight="800" letter-spacing="-4">BUILD THE</text>
-      <text x="34" y="315" fill="url(#type)" font-size="85" font-weight="800" letter-spacing="-4.8">UNEXPECTED.</text>
-      <text x="40" y="364" fill="#b5c1d5" font-size="25">Cloud. AI. Quantum. Zero comfort zones.</text>
-      ${orbitalSystem(360, 568, 0.88)}
-      <path d="M40 783H680" stroke="#657a9d" stroke-opacity=".3"/>
-      <text x="40" y="826" fill="#dbe5f3" font-size="20" class="mono" letter-spacing="1">ENGINEERED TO EXPLORE.</text>
-      <text x="40" y="864" fill="#84e3cf" font-size="19" class="mono" letter-spacing="1">AZURE / AGENTS / QUBITS</text>
-      <path d="M650 840H677 M666 829L677 840L666 851" stroke="#83efd0" stroke-width="2"/>`
-    : `<ellipse cx="1010" cy="250" rx="440" ry="350" fill="url(#atmosphere)"/>
-      <text x="52" y="59" fill="#f3f5ff" font-size="23" font-weight="750" letter-spacing="2">CHAPI<tspan fill="#7cf5d2">.</tspan>DEV</text>
-      <path d="M236 39V61" stroke="#55617d" stroke-opacity=".6"/>
-      <text x="257" y="55" fill="#8c9ab4" font-size="11" class="mono" letter-spacing="1.4">PERSONAL LAB / PUBLIC FIELD NOTES</text>
-      <rect x="1059" y="32" width="169" height="34" rx="17" fill="#101f26" stroke="#81efcd" stroke-opacity=".23"/>
-      <circle cx="1078" cy="49" r="3.5" fill="#8bf5ca" class="beacon"/>
-      <text x="1092" y="53" fill="#baebda" font-size="11" class="mono">BUILD MODE: ON</text>
-      <text x="56" y="139" fill="#9caac3" font-size="15" letter-spacing="2.8">ANTONIO CHAPINAL REYES</text>
-      <text x="46" y="240" fill="#f4f4fd" font-size="98" font-weight="800" letter-spacing="-4">BUILD THE</text>
-      <text x="46" y="343" fill="url(#type)" font-size="98" font-weight="800" letter-spacing="-5.5">UNEXPECTED.</text>
-      <text x="55" y="394" fill="#b5c1d5" font-size="22">Cloud. AI. Quantum. Zero comfort zones.</text>
-      <path d="M56 433H85" stroke="#85f5d0" stroke-width="2"/>
-      <text x="97" y="438" fill="#83d8c6" font-size="11" class="mono" letter-spacing="1.8">ENGINEERED TO EXPLORE</text>
-      ${orbitalSystem(1000, 267, 0.9)}
-      <text x="1000" y="464" fill="#9caac3" font-size="10" class="mono" letter-spacing="2" text-anchor="middle">CURIOSITY / NO UPPER LIMIT</text>
-      <path d="M52 488H1228" stroke="#657a9d" stroke-opacity=".3"/>
-      <text x="56" y="523" fill="#8cebd1" font-size="11" class="mono" letter-spacing="1.3">01 / CLOUD NATIVE</text>
-      <text x="56" y="549" fill="#a5b3ca" font-size="15">Azure. Infrastructure. Connected systems.</text>
-      <path d="M452 512V551" stroke="#657a9d" stroke-opacity=".25"/>
-      <text x="480" y="523" fill="#aeb4ff" font-size="11" class="mono" letter-spacing="1.3">02 / AGENTIC AI</text>
-      <text x="480" y="549" fill="#a5b3ca" font-size="15">Intelligence with a deployment plan.</text>
-      <path d="M858 512V551" stroke="#657a9d" stroke-opacity=".25"/>
-      <text x="886" y="523" fill="#f0bc96" font-size="11" class="mono" letter-spacing="1.3">03 / QUANTUM</text>
-      <text x="886" y="549" fill="#a5b3ca" font-size="15">A different way to think.</text>`;
-  return document(width, height, 'CHAPI.DEV / Build the unexpected',
-    'Antonio Chapinal Reyes. Cloud, AI and quantum computing. An original wireframe planet with slowly orbiting signals. Animation respects reduced-motion preferences.',
-    `<rect width="${width}" height="${height}" fill="url(#grid)"/>${stars(width, height)}${content}`);
+function universe() {
+  const orbitalStyles = worlds.map(worldStyles).join('\n');
+  const orbitLines = worlds.map(world =>
+    `<ellipse cx="640" cy="490" rx="${world.rx}" ry="${world.ry}" stroke="${world.color}" stroke-opacity=".21" stroke-width="1.3" stroke-dasharray="3 8"/>`).join('');
+  const rivets = Array.from({ length: 19 }, (_, i) =>
+    `<circle cx="${40 + i * 66.667}" cy="14" r="2.4" fill="#a39785"/><circle cx="${40 + i * 66.667}" cy="946" r="2.4" fill="#a39785"/>`).join('');
+  return document(1280, 960, "Antonio's pocket universe",
+    'Six original storybook planets travel on elliptical orbits around the smiling star Sol-0. Qubit-9 carries a cat moon, Foundria a robot, Nimbus-7 a satellite, Gitopia a cargo cube, Pixelune a camera, and Copilotia a rocket. Each planet also spins on its own axis. Motion pauses when reduced motion is requested. The landing pads below the illustration open the projects.',
+    `<rect x="2" y="2" width="1276" height="956" rx="42" fill="#e6d9c2" stroke="#a99b89" stroke-width="2"/>
+    <rect x="15" y="25" width="1250" height="910" rx="31" fill="url(#space)" stroke="#afaa9b" stroke-width="2"/>
+    <g clip-path="url(#window)">
+      <ellipse cx="1000" cy="290" rx="480" ry="310" fill="url(#nebula)"/>
+      <ellipse cx="180" cy="680" rx="430" ry="280" fill="url(#nebula)"/>
+      ${starfield()}
+      <path d="M66 158L123 120L158 153L206 100 M1033 798L1090 830L1130 790L1199 826" stroke="#d4c7df" stroke-opacity=".22" stroke-width="1"/>
+      <g fill="#e5d5b9" opacity=".7"><circle cx="66" cy="158" r="2"/><circle cx="123" cy="120" r="2"/><circle cx="158" cy="153" r="2"/><circle cx="206" cy="100" r="2"/></g>
+      <text x="54" y="65" fill="#eadac2" font-size="21" letter-spacing="1.7" class="mono">CHAPI'S POCKET UNIVERSE</text>
+      <text x="1223" y="64" text-anchor="end" fill="#a99fb9" font-size="12" class="mono">not to scale. obviously.</text>
+      ${orbitLines}
+      ${sun()}
+      <g transform="translate(640 490)">${worlds.map(world => planet(world)).join('')}</g>
+      <text x="640" y="904" fill="#b5acbc" font-size="13" text-anchor="middle" letter-spacing="1.3" class="mono">PLEASE KEEP YOUR WAVEFUNCTION INSIDE THE UNIVERSE.</text>
+    </g>
+    ${rivets}
+    <path d="M7 170H22 M7 790H22 M1258 170H1273 M1258 790H1273" stroke="#a99b89" stroke-width="3" stroke-linecap="round"/>`,
+    orbitalStyles,
+    `<linearGradient id="space" x2="1" y2="1"><stop stop-color="#122038"/><stop offset=".55" stop-color="#18243d"/><stop offset="1" stop-color="#26243b"/></linearGradient>
+    <radialGradient id="nebula"><stop stop-color="#b39bb5" stop-opacity=".14"/><stop offset="1" stop-color="#b39bb5" stop-opacity="0"/></radialGradient>
+    <radialGradient id="sun-halo"><stop stop-color="#f2cb8e" stop-opacity=".3"/><stop offset="1" stop-color="#f2cb8e" stop-opacity="0"/></radialGradient>
+    <clipPath id="window"><rect x="16" y="26" width="1248" height="908" rx="30"/></clipPath>`);
 }
 
-function card({ number, category, lines, accent, art, note }) {
-  return document(600, 260, `${category} / ${lines.join(' ')}`, note,
-    `<rect width="600" height="260" fill="url(#grid)"/>
-    <ellipse cx="495" cy="130" rx="210" ry="195" fill="url(#card-glow)"/>
-    <path d="M28 52H51" stroke="${accent}" stroke-width="2"/>
-    <text x="62" y="56" fill="${accent}" font-size="11" class="mono" letter-spacing="1.4">${category}</text>
-    <text x="28" y="122" fill="#f1f5ff" font-size="34" font-weight="750" letter-spacing="-1">${lines[0]}</text>
-    <text x="28" y="165" fill="#f1f5ff" font-size="34" font-weight="750" letter-spacing="-1">${lines[1]}</text>
-    <text x="30" y="229" fill="#8d9cb7" font-size="11" class="mono" letter-spacing="1.6">EXPERIMENT ${number}</text>
-    <path d="M554 222H573 M565 214L573 222L565 230" stroke="${accent}" stroke-width="1.5"/>
-    ${art}`,
-    `<radialGradient id="card-glow"><stop stop-color="${accent}" stop-opacity=".13"/><stop offset="1" stop-color="${accent}" stop-opacity="0"/></radialGradient>`);
+function landing(world) {
+  const small = { ...world, size: 142 };
+  return document(240, 230, `${world.name} / ${world.kind}`,
+    `${world.name} is a landing pad for ${world.repo}. Its miniature satellite follows an elliptical orbit.`,
+    `<g transform="translate(120 91)">${planet(small, false)}</g>
+    <rect x="34" y="181" width="172" height="30" rx="15" fill="#eadfc9" stroke="#a99b89"/>
+    <text x="120" y="201" fill="#65574f" text-anchor="middle" font-size="18" font-weight="650" letter-spacing="1" class="mono">${world.name}</text>
+    <text x="120" y="225" fill="#a4917d" text-anchor="middle" font-size="9" letter-spacing="1" class="mono">${world.kind}</text>`,
+    worldStyles(small));
 }
 
-const agentArt = `<g transform="translate(463 137)">
-  <path d="M-60 -51L0 0L60 -51 M-60 51L0 0L60 51" stroke="#81e8cd" stroke-opacity=".5" stroke-width="1.5"/>
-  <path d="M-60 -51H60V51H-60Z" stroke="#81e8cd" stroke-opacity=".17" stroke-dasharray="3 7"/>
-  ${[[-60, -51], [60, -51], [-60, 51], [60, 51]].map(([x, y]) => `<rect x="${x - 13}" y="${y - 13}" width="26" height="26" rx="7" fill="#102c2c" stroke="#83d9cb" stroke-opacity=".7"/><circle cx="${x}" cy="${y}" r="3" fill="#9cf6dd"/>`).join('')}
-  <rect x="-24" y="-24" width="48" height="48" rx="13" fill="#102a2b" stroke="#96ffe1"/>
-  <path d="M-10 0H10 M0 -10V10" stroke="#bcfff0" stroke-width="2"/>
-  <circle r="37" stroke="#87f3d0" stroke-opacity=".25" stroke-dasharray="2 6" class="orbit"/>
-</g>`;
+function wormhole() {
+  return document(200, 150, 'An entirely suspicious wormhole',
+    'A tiny purple wormhole with a travelling golden star. Enter it to explore adiabatic quantum computing.',
+    `<g transform="translate(100 76)">
+      <ellipse rx="65" ry="38" fill="#29233e" stroke="#9c8bba" stroke-width="2"/>
+      <ellipse rx="49" ry="29" fill="#211e34" stroke="#b49dcb" stroke-width="1.5" transform="rotate(-14)"/>
+      <ellipse rx="33" ry="20" fill="#181a2b" stroke="#c1abd0" stroke-width="1.5" transform="rotate(-30)"/>
+      <ellipse rx="18" ry="12" fill="#101825" stroke="#cdb8d8" stroke-opacity=".7" transform="rotate(-50)"/>
+      <g class="moving" style="animation:spin 9s linear infinite"><path d="M0 -54L3 -45L12 -42L3 -39L0 -30L-3 -39L-12 -42L-3 -45Z" fill="#ebcf95" stroke="#8e785f" stroke-width="1"/></g>
+      <path d="M-83 -17L-81 -11L-75 -9L-81 -7L-83 -1L-85 -7L-91 -9L-85 -11Z" fill="#c6afd5"/>
+      <text y="66" fill="#a4917d" text-anchor="middle" font-size="10" letter-spacing="2" class="mono">PROBABLY SAFE</text>
+    </g>`);
+}
 
-const cloudArt = `<g transform="translate(463 139)">
-  <path d="M0 -71L73 -28V50L0 91L-73 50V-28Z" stroke="#79c8ff" stroke-opacity=".22" stroke-dasharray="4 7"/>
-  <path d="M0 -51L46 -25V27L0 53L-46 27V-25Z" fill="#0e2238" stroke="#7abffa" stroke-opacity=".65"/>
-  <path d="M0 -51V0 M-46 -25L0 0L46 -25 M0 0V53" stroke="#8dd8ff" stroke-opacity=".3"/>
-  <rect x="-21" y="-9" width="42" height="36" rx="8" fill="#101c31" stroke="#9cd7ff" stroke-width="1.5"/>
-  <path d="M-11 -9V-18A11 11 0 0 1 11 -18V-9" stroke="#9cd7ff" stroke-width="2"/>
-  <circle cy="6" r="3" fill="#bbebff"/><path d="M0 9V15" stroke="#bbebff" stroke-width="2"/>
-  <circle cy="-71" r="4" fill="#99d8ff"/><circle cx="-73" cy="50" r="4" fill="#99d8ff"/><circle cx="73" cy="50" r="4" fill="#99d8ff"/>
-</g>`;
-
-const quantumArt = `<g transform="translate(465 137)">
-  <circle r="65" fill="#1c1738" fill-opacity=".7" stroke="#bfa6ff" stroke-opacity=".65"/>
-  <ellipse rx="65" ry="20" stroke="#bba4ff" stroke-opacity=".5" transform="rotate(-25)"/>
-  <ellipse rx="22" ry="65" stroke="#bba4ff" stroke-opacity=".5" transform="rotate(-25)"/>
-  <path d="M0 -88V88 M-82 38L82 -38" stroke="#ad9bda" stroke-opacity=".3"/>
-  <path d="M0 0L29 -49 M20 -45L29 -49L30 -39" stroke="#dfcdff" stroke-width="2.5" stroke-linejoin="round"/>
-  <circle cx="29" cy="-49" r="5" fill="#dcc5ff"/><circle r="3" fill="#dcc5ff"/>
-  <text x="8" y="-78" fill="#cebeed" font-size="14" class="mono">|0&gt;</text>
-  <text x="8" y="96" fill="#cebeed" font-size="14" class="mono">|1&gt;</text>
-  <circle r="77" stroke="#c1a4ff" stroke-opacity=".2" stroke-dasharray="2 8" class="reverse"/>
-</g>`;
-
-const devsecopsArt = `<g transform="translate(463 138)">
-  <path d="M0 -73L58 -49V-3C58 35 27 59 0 76C-27 59 -58 35 -58 -3V-49Z" fill="#2a1c24" stroke="#f1b08a" stroke-opacity=".65"/>
-  <path d="M0 -58L45 -39V-3C45 26 23 46 0 61C-23 46 -45 26 -45 -3V-39Z" stroke="#f1b08a" stroke-opacity=".18"/>
-  <path d="M-22 -1L-6 15L25 -17" stroke="#ffd1ab" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M-88 -32H-58 M58 -32H88 M-88 30H-48 M48 30H88" stroke="#e9a47e" stroke-opacity=".5"/>
-  <circle cx="-88" cy="-32" r="4" fill="#ffc297"/><circle cx="88" cy="-32" r="4" fill="#ffc297"/>
-  <circle cx="-88" cy="30" r="4" fill="#ffc297"/><circle cx="88" cy="30" r="4" fill="#ffc297"/>
-</g>`;
-
-const cards = [
-  { file: 'project-agents.svg', number: '01', category: 'AGENT SYSTEMS', lines: ['AI THAT', 'LEAVES THE LAB.'], accent: '#8bf0d0', art: agentArt, note: 'One agent, four deployment architectures. A connected graph of four runtimes around an agent core.' },
-  { file: 'project-cloud.svg', number: '02', category: 'PRIVATE BY DESIGN', lines: ['CLOUD WITHOUT', 'THE EXPOSURE.'], accent: '#96cfff', art: cloudArt, note: 'Private connectivity for Microsoft Fabric. A locked, connected infrastructure cube.' },
-  { file: 'project-quantum.svg', number: '03', category: 'QUANTUM FIELD NOTES', lines: ['THINK IN', 'SUPERPOSITION.'], accent: '#c4a9ff', art: quantumArt, note: 'Quantum computing with Qiskit and Q#. A Bloch sphere with a quantum state vector.' },
-  { file: 'project-devsecops.svg', number: '04', category: 'SOFTWARE SUPPLY CHAIN', lines: ['SHIP IT.', 'PROVE IT.'], accent: '#ffc09a', art: devsecopsArt, note: 'GitOps, signed artifacts and policy enforcement. A verified shield connected to a delivery pipeline.' },
-];
-
+for (const world of worlds) {
+  world.image = (await readFile(new URL(`planets/${world.slug}.png`, assets))).toString('base64');
+}
 await mkdir(assets, { recursive: true });
 await Promise.all([
-  writeFile(`${assets}hero.svg`, hero()),
-  writeFile(`${assets}hero-mobile.svg`, hero(true)),
-  ...cards.map(({ file, ...config }) => writeFile(`${assets}${file}`, card(config))),
-  writeFile(`${assets}footer.svg`, document(1280, 140,
-    'Stay curious. Build the next thing.',
-    'CHAPI.DEV. End of transmission. An open invitation to keep exploring and building.',
-    `<path d="M40 70H168 M1112 70H1240" stroke="#80e4ca" stroke-opacity=".3"/>
-    <circle cx="40" cy="70" r="3" fill="#90f3d3" class="beacon"/>
-    <circle cx="1240" cy="70" r="3" fill="#90f3d3"/>
-    <text x="640" y="64" fill="#e1e9f8" text-anchor="middle" font-size="27" font-weight="650" letter-spacing="1">STAY CURIOUS. BUILD THE NEXT THING.</text>
-    <text x="640" y="99" fill="#8597b5" text-anchor="middle" font-size="11" class="mono" letter-spacing="2.5">CHAPI.DEV / END OF TRANSMISSION</text>`)),
+  writeFile(new URL('universe.svg', assets), universe()),
+  ...worlds.map(world => writeFile(new URL(`land-${world.slug}.svg`, assets), landing(world))),
+  writeFile(new URL('wormhole.svg', assets), wormhole()),
 ]);
-console.log(`Generated ${cards.length + 3} original SVG assets in ${assets}`);
+console.log(`Generated the pocket universe, six landing pads and a wormhole in ${fileURLToPath(assets)}`);
