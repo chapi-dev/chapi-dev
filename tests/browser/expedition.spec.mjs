@@ -54,18 +54,26 @@ test('replacement jumps and aborting preserve the last completed arrival', async
   await expect(page.locator('#mission-title')).toHaveText('Ferrum');
 });
 
-test('the star chart, route keys and native controls dialog work', async ({ page }) => {
+test('the star chart, surface scanner, satellite moons, route keys and native controls dialog work', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await ready(page);
+  await page.locator('#scan-toggle').click();
+  await expect(page.locator('#scan-badge')).toHaveText('SURFACE SURVEYED');
+  await expect(page.locator('#moon-list .moon-card')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Inspect moon Aethel Foundry', exact: true }).click();
+  await expect(page.locator('#scan-badge')).toHaveText('MOON LOCK');
+  await expect(page.locator('#repository')).toHaveAttribute('href', 'https://github.com/chapi-dev/agentic-factory-hack');
   await page.locator('#chart-toggle').click();
   await expect(page.locator('body')).toHaveAttribute('data-mode', 'chart');
   const markers = page.locator('#map-markers');
-  await expect(markers.getByRole('button')).toHaveCount(6);
+  await expect(markers.getByRole('button')).toHaveCount(8);
   await markers.getByRole('button', { name: 'Jump to Parallax', exact: true }).click();
   await expect(page.locator('#mission-title')).toHaveText('Parallax');
   await expect(page.locator('#map-markers')).toBeHidden();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#mission-title')).toHaveText('Ferrum');
+  await page.keyboard.press('5');
+  await expect(page.locator('#mission-title')).toHaveText('Sentinel');
   await page.keyboard.press('1');
   await expect(page.locator('#mission-title')).toHaveText('Vesper');
   await page.locator('#help-toggle').click();
@@ -93,7 +101,7 @@ test('reduced motion is static, deep links arrive directly and motion can finish
   await expect(page.locator('#mission-title')).toHaveText('Pelagic');
 });
 
-test('all six destinations remain usable without WebGL', async ({ page }) => {
+test('all eight destinations remain usable without WebGL', async ({ page }) => {
   await page.addInitScript(() => {
     const context = HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.getContext = function (kind, ...args) {
@@ -104,17 +112,17 @@ test('all six destinations remain usable without WebGL', async ({ page }) => {
   await expect(page.locator('#fallback')).toBeVisible();
   await expect(page.locator('#chart-toggle')).toBeDisabled();
   await expect(page.locator('#reset-view')).toBeDisabled();
-  await expect(page.locator('#route-list button')).toHaveCount(6);
+  await expect(page.locator('#route-list button')).toHaveCount(8);
   await route(page, 'Parallax').click();
   await expect(page.locator('#mission-title')).toHaveText('Parallax');
   await expect(page.locator('#repository')).toHaveAttribute('href', 'https://github.com/chapi-dev/Introduction-to-Quantum-Computing');
 });
 
-test('the six ordinary repository links survive with JavaScript disabled', async ({ browser }) => {
+test('the eight ordinary repository links survive with JavaScript disabled', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('http://127.0.0.1:4173/');
-  await expect(page.locator('noscript a')).toHaveCount(6);
+  await expect(page.locator('noscript a')).toHaveCount(8);
   for (const link of await page.locator('noscript a').all()) {
     await expect(link).toBeVisible();
     await expect(link).toHaveAttribute('href', /^https:\/\/github\.com\/chapi-dev\//);
@@ -155,19 +163,19 @@ test('dragging, zooming and ship movement inspect the actual 3D world and reset 
   await expect.poll(async () => await image(page) === original).toBe(true);
 });
 
-test('all six geological worlds are distinct and the transit has an actual rendered view', async ({ page }, testInfo) => {
+test('all eight geological worlds are distinct and the transit has an actual rendered view', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await ready(page);
   const fingerprints = new Set();
   let previous = '';
-  for (const name of ['Vesper', 'Pelagic', 'Parallax', 'Ferrum', 'Halation', 'Aphelion']) {
+  for (const name of ['Vesper', 'Pelagic', 'Parallax', 'Ferrum', 'Sentinel', 'Meridian', 'Halation', 'Aphelion']) {
     await route(page, name).click();
     await expect.poll(() => image(page)).not.toBe(previous);
     previous = await image(page);
     fingerprints.add(previous);
     await page.locator('canvas').screenshot({ path: testInfo.outputPath(`${name.toLowerCase()}.png`) });
   }
-  expect(fingerprints.size).toBe(6);
+  expect(fingerprints.size).toBe(8);
   await page.locator('#motion-toggle').click();
   await route(page, 'Vesper').click();
   await page.waitForTimeout(650);
@@ -186,10 +194,10 @@ test('desktop and narrow mobile layouts keep the flight view and routes in bound
     await ready(page, `?scoutTheme=${theme}`);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await expect(page.locator('canvas')).toBeVisible();
-    await expect(page.locator('#route-list button')).toHaveCount(6);
+    await expect(page.locator('#route-list button')).toHaveCount(8);
     await page.screenshot({ path: testInfo.outputPath(`${width}-${theme}.png`), fullPage: true });
     if (width < 800) {
-      for (const name of ['Vesper', 'Pelagic', 'Parallax', 'Ferrum', 'Halation', 'Aphelion']) {
+      for (const name of ['Vesper', 'Pelagic', 'Parallax', 'Ferrum', 'Sentinel', 'Meridian', 'Halation', 'Aphelion']) {
         await page.locator('#chart-toggle').click();
         if (name === 'Vesper') await page.screenshot({ path: testInfo.outputPath(`${width}-chart.png`) });
         await page.locator('#map-markers').getByRole('button', { name: `Jump to ${name}`, exact: true }).click();

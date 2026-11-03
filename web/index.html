@@ -21,7 +21,8 @@
   <a class="skip-link" href="#mission-title">Skip to destination</a>
   <header class="masthead">
     <a class="wordmark" href="https://github.com/chapi-dev" aria-label="Antonio's GitHub profile">CHAPI<span aria-hidden="true"> / </span><strong>DISTANCE</strong></a>
-    <span class="edition">AN INTERGALACTIC FIELD JOURNAL</span>
+    <span class="edition">MICROSOFT CLOUD, AI &amp; QUANTUM EXPEDITION</span>
+    <span class="survey-pill" aria-label="Surveyed systems">SURVEYED <strong id="survey-count">01 / 08</strong></span>
     <div class="utilities">
       <button id="theme-toggle" class="quiet" type="button" aria-label="Change colour theme">Theme</button>
       <button id="help-toggle" class="quiet" type="button" aria-label="Open flight controls">Controls <span aria-hidden="true">?</span></button>
@@ -30,19 +31,28 @@
 
   <main class="expedition">
     <aside class="journal" aria-label="Destination journal">
-      <div class="journal-heading"><span class="eyebrow">TRANSMISSION <span id="sequence">01 / 06</span></span><span class="signal" aria-hidden="true"></span></div>
+      <div class="journal-heading"><span class="eyebrow">TRANSMISSION <span id="sequence">01 / 08</span></span><span id="scan-badge" class="scan-badge">ORBIT LOCKED</span><span class="signal" aria-hidden="true"></span></div>
       <div class="entry">
-        <p id="mission-field" class="eyebrow">Autonomous systems</p>
+        <p id="mission-field" class="eyebrow">Azure AI Foundry &amp; Multi-Agent Systems</p>
         <h1 id="mission-title" tabindex="-1">Vesper</h1>
-        <p id="mission-line" class="entry-line">Intelligence needs somewhere to live.</p>
-        <p id="mission-description" class="entry-description">One agent, four deployment architectures. A measured expedition through hosted, self-hosted and hybrid AI systems.</p>
-        <a id="repository" class="primary" href="https://github.com/chapi-dev/agent-hosting-lab" target="_blank" rel="noopener noreferrer">Open the repository <span aria-hidden="true">&#8599;</span></a>
+        <p id="mission-line" class="entry-line">Autonomous intelligence needs resilient orbital infrastructure.</p>
+        <p id="mission-description" class="entry-description">Benchmarks and production architectures for hosting, orchestrating and observing multi-agent systems on Microsoft Foundry, MCP and Azure.</p>
+        <div id="tech-tags" class="tech-tags" aria-label="Microsoft stack"></div>
+        <a id="repository" class="primary" href="https://github.com/chapi-dev/agent-hosting-lab" target="_blank" rel="noopener noreferrer"><span id="repository-label">Open flagship repository</span> <span aria-hidden="true">&#8599;</span></a>
         <button id="next-jump" class="text-button" type="button">Next destination <span aria-hidden="true">&#8594;</span></button>
       </div>
+      <div class="satellites" aria-label="Orbiting satellite repositories">
+        <div class="satellites-header">
+          <span class="eyebrow">ORBITAL SATELLITE REPOS</span>
+          <span id="satellite-count" class="eyebrow">03 MOONS</span>
+        </div>
+        <div id="moon-list" class="moon-list"></div>
+      </div>
       <dl class="telemetry">
-        <div><dt>Surface report</dt><dd id="surface-report">Volcanic crust / active relay</dd></div>
+        <div><dt>Surface report</dt><dd id="surface-report">Volcanic basalt crust / active magma relay grid</dd></div>
         <div><dt>Navigation</dt><dd id="flight-state" role="status" aria-live="polite">Initializing engine</dd></div>
-        <div><dt>Sector coordinates</dt><dd id="coordinates">-180 / +15 / 000</dd></div>
+        <div><dt>Sector coordinates</dt><dd id="coordinates">-260 / +028 / +040</dd></div>
+        <div><dt>Planetary telemetry</dt><dd id="biome-stats">1.14 G · 740 K · Foundry Core</dd></div>
       </dl>
       <p class="journal-credit">Antonio Chapinal<br><span>Cloud &amp; AI engineering at Microsoft.</span></p>
     </aside>
@@ -50,10 +60,20 @@
     <section id="viewport" class="viewport" aria-label="Interactive 3D expedition">
       <div class="view-caption">
         <span id="view-label">01 / VESPER APPROACH</span>
-        <span id="view-hint">Drag to orbit. Scroll to approach.</span>
+        <div class="hud-strip" aria-hidden="true">
+          <span>HDG <strong id="hud-heading">000°</strong></span>
+          <span>ALT <strong id="hud-altitude">42.0 Mm</strong></span>
+          <span>VEL <strong id="hud-speed">0.0 km/s</strong></span>
+          <span>SEC <strong id="hud-sector">Foundry Core</strong></span>
+        </div>
+        <span id="view-hint">Drag to orbit. Scroll to approach. F to scan.</span>
       </div>
       <div id="canvas-host" class="canvas-host"></div>
       <div id="map-markers" class="map-markers" aria-label="Chart destinations" hidden></div>
+      <div class="sector-radar" aria-hidden="true">
+        <div class="radar-title">3D SECTOR RADAR</div>
+        <svg id="radar-svg" viewBox="-420 -1620 840 1760"></svg>
+      </div>
       <div id="fallback" class="fallback" hidden>
         <svg viewBox="0 0 400 240" aria-hidden="true"><path d="M20 200L110 70L240 155L380 30M110 70L195 15M240 155L310 225"/><circle cx="110" cy="70" r="7"/><circle cx="240" cy="155" r="7"/><circle cx="380" cy="30" r="7"/></svg>
         <p class="eyebrow">THE MAP STILL WORKS</p>
@@ -64,28 +84,31 @@
       <div class="flight-indicator" aria-hidden="true"><span id="jump-progress"></span></div>
       <div class="view-controls">
         <button id="chart-toggle" class="control" type="button" aria-pressed="false">Star chart</button>
+        <button id="scan-toggle" class="control" type="button" aria-pressed="false">Scan surface</button>
         <button id="motion-toggle" class="control" type="button" aria-pressed="true">Motion on</button>
         <button id="reset-view" class="control" type="button">Return to orbit</button>
       </div>
-      <p class="scale-note">Fictional worlds. Real code. No astronomical scale implied.</p>
+      <p class="scale-note">Fictional worlds. Real Microsoft engineering. No astronomical scale implied.</p>
     </section>
     <nav id="route-list" class="routes" aria-label="Choose a destination"></nav>
   </main>
+
   <footer class="footer"><span>NO TWO ARRIVALS ARE THE SAME.</span><a href="https://github.com/chapi-dev">Back to GitHub &#8599;</a><span>Personal work. Not official Microsoft material.</span></footer>
 
   <dialog id="controls-dialog" aria-labelledby="controls-title">
     <form method="dialog"><button class="quiet close-dialog" aria-label="Close controls">Close &#215;</button></form>
-    <p class="eyebrow">FLIGHT MANUAL / 001</p>
-    <h2 id="controls-title">There is more than one way to get there.</h2>
+    <p class="eyebrow">FLIGHT MANUAL / 002</p>
+    <h2 id="controls-title">Starship flight &amp; 3D holomap controls.</h2>
     <dl class="control-guide">
-      <div><dt>Drag / touch</dt><dd>Orbit the current world.</dd></div>
-      <div><dt>Scroll / pinch</dt><dd>Change your approach distance.</dd></div>
-      <div><dt>&#8592; / &#8594; or 1-6</dt><dd>Jump to another destination.</dd></div>
-      <div><dt>W A S D / Q E</dt><dd>Move the ship while the 3D view is focused.</dd></div>
-      <div><dt>M / R</dt><dd>Open the star chart / return to orbit.</dd></div>
-      <div><dt>Escape</dt><dd>Abort transit and return to the last arrival.</dd></div>
+      <div><dt>Drag / touch</dt><dd>Orbit the current world or rotate the 3D star map.</dd></div>
+      <div><dt>Scroll / pinch</dt><dd>Approach the surface or zoom the galactic holomap.</dd></div>
+      <div><dt>&#8592; / &#8594; or 1-8</dt><dd>Engage hyperdrive jump to another Microsoft tech system.</dd></div>
+      <div><dt>W A S D / Q E + Shift</dt><dd>Fly the ship around the world (hold Shift for thrusters).</dd></div>
+      <div><dt>F</dt><dd>Sweep the planet with a holographic geological &amp; repo scanner.</dd></div>
+      <div><dt>M / R</dt><dd>Toggle the 3D Galactic Star Map / return to standard orbit.</dd></div>
+      <div><dt>Escape</dt><dd>Abort hyperdrive transit and return to the last arrival.</dd></div>
     </dl>
-    <p>All routes also have ordinary buttons and repository links. Reduced-motion preferences disable automatic movement and warp effects.</p>
+    <p>Every planet and orbiting moon maps to a real public Microsoft technology repository. Reduced-motion preferences disable automatic movement and warp effects.</p>
   </dialog>
   <noscript><div class="noscript"><h2>Explore without the flight engine.</h2><p>JavaScript powers the 3D view, not access to the projects.</p><!-- NO_SCRIPT_ROUTES --></div></noscript>
   <script>/* APP_SCRIPT */</script>
