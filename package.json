@@ -1,0 +1,20 @@
+{
+  "name": "chapi-distance",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "art": "npm run build && node scripts/generate-art.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test": "node --test tests/navigation.test.mjs",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "esbuild": "0.28.2"
+  }
+}

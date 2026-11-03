@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <meta name="description" content="DISTANCE: an intergalactic field journal by Antonio Chapinal. Fictional worlds, real engineering projects.">
+  <title>DISTANCE - Antonio Chapinal</title>
+  <style>/* APP_STYLES */</style>
+  <noscript><style>.expedition, .routes, .utilities, .footer { display: none; }</style></noscript>
+</head>
+<body data-renderer="loading" data-mode="arrival">
+  <a class="skip-link" href="#mission-title">Skip to destination</a>
+  <header class="masthead">
+    <a class="wordmark" href="https://github.com/chapi-dev" aria-label="Antonio's GitHub profile">CHAPI<span aria-hidden="true"> / </span><strong>DISTANCE</strong></a>
+    <span class="edition">AN INTERGALACTIC FIELD JOURNAL</span>
+    <div class="utilities">
+      <button id="theme-toggle" class="quiet" type="button" aria-label="Change colour theme">Theme</button>
+      <button id="help-toggle" class="quiet" type="button" aria-label="Open flight controls">Controls <span aria-hidden="true">?</span></button>
+    </div>
+  </header>
+
+  <main class="expedition">
+    <aside class="journal" aria-label="Destination journal">
+      <div class="journal-heading"><span class="eyebrow">TRANSMISSION <span id="sequence">01 / 06</span></span><span class="signal" aria-hidden="true"></span></div>
+      <div class="entry">
+        <p id="mission-field" class="eyebrow">Autonomous systems</p>
+        <h1 id="mission-title" tabindex="-1">Vesper</h1>
+        <p id="mission-line" class="entry-line">Intelligence needs somewhere to live.</p>
+        <p id="mission-description" class="entry-description">One agent, four deployment architectures. A measured expedition through hosted, self-hosted and hybrid AI systems.</p>
+        <a id="repository" class="primary" href="https://github.com/chapi-dev/agent-hosting-lab" target="_blank" rel="noopener noreferrer">Open the repository <span aria-hidden="true">&#8599;</span></a>
+        <button id="next-jump" class="text-button" type="button">Next destination <span aria-hidden="true">&#8594;</span></button>
+      </div>
+      <dl class="telemetry">
+        <div><dt>Surface report</dt><dd id="surface-report">Volcanic crust / active relay</dd></div>
+        <div><dt>Navigation</dt><dd id="flight-state" role="status" aria-live="polite">Initializing engine</dd></div>
+        <div><dt>Sector coordinates</dt><dd id="coordinates">-180 / +15 / 000</dd></div>
+      </dl>
+      <p class="journal-credit">Antonio Chapinal<br><span>Cloud &amp; AI engineering at Microsoft.</span></p>
+    </aside>
+
+    <section id="viewport" class="viewport" aria-label="Interactive 3D expedition">
+      <div class="view-caption">
+        <span id="view-label">01 / VESPER APPROACH</span>
+        <span id="view-hint">Drag to orbit. Scroll to approach.</span>
+      </div>
+      <div id="canvas-host" class="canvas-host"></div>
+      <div id="map-markers" class="map-markers" aria-label="Chart destinations" hidden></div>
+      <div id="fallback" class="fallback" hidden>
+        <svg viewBox="0 0 400 240" aria-hidden="true"><path d="M20 200L110 70L240 155L380 30M110 70L195 15M240 155L310 225"/><circle cx="110" cy="70" r="7"/><circle cx="240" cy="155" r="7"/><circle cx="380" cy="30" r="7"/></svg>
+        <p class="eyebrow">THE MAP STILL WORKS</p>
+        <h2>Flight deck offline.</h2>
+        <p>WebGL is unavailable in this browser. Every destination and repository is still accessible from the route list.</p>
+      </div>
+      <div class="crosshair" aria-hidden="true"></div>
+      <div class="flight-indicator" aria-hidden="true"><span id="jump-progress"></span></div>
+      <div class="view-controls">
+        <button id="chart-toggle" class="control" type="button" aria-pressed="false">Star chart</button>
+        <button id="motion-toggle" class="control" type="button" aria-pressed="true">Motion on</button>
+        <button id="reset-view" class="control" type="button">Return to orbit</button>
+      </div>
+      <p class="scale-note">Fictional worlds. Real code. No astronomical scale implied.</p>
+    </section>
+    <nav id="route-list" class="routes" aria-label="Choose a destination"></nav>
+  </main>
+  <footer class="footer"><span>NO TWO ARRIVALS ARE THE SAME.</span><a href="https://github.com/chapi-dev">Back to GitHub &#8599;</a><span>Personal work. Not official Microsoft material.</span></footer>
+
+  <dialog id="controls-dialog" aria-labelledby="controls-title">
+    <form method="dialog"><button class="quiet close-dialog" aria-label="Close controls">Close &#215;</button></form>
+    <p class="eyebrow">FLIGHT MANUAL / 001</p>
+    <h2 id="controls-title">There is more than one way to get there.</h2>
+    <dl class="control-guide">
+      <div><dt>Drag / touch</dt><dd>Orbit the current world.</dd></div>
+      <div><dt>Scroll / pinch</dt><dd>Change your approach distance.</dd></div>
+      <div><dt>&#8592; / &#8594; or 1-6</dt><dd>Jump to another destination.</dd></div>
+      <div><dt>W A S D / Q E</dt><dd>Move the ship while the 3D view is focused.</dd></div>
+      <div><dt>M / R</dt><dd>Open the star chart / return to orbit.</dd></div>
+      <div><dt>Escape</dt><dd>Abort transit and return to the last arrival.</dd></div>
+    </dl>
+    <p>All routes also have ordinary buttons and repository links. Reduced-motion preferences disable automatic movement and warp effects.</p>
+  </dialog>
+  <noscript><div class="noscript"><h2>Explore without the flight engine.</h2><p>JavaScript powers the 3D view, not access to the projects.</p><!-- NO_SCRIPT_ROUTES --></div></noscript>
+  <script>/* APP_SCRIPT */</script>
+</body>
+</html>
